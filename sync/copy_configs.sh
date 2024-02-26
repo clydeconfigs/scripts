@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp -av /usr/share/rofi/themes/glue_pro_blue.rasi ~/Media/Code/Configs/glue_pro_blue.rasi
+cp -av /usr/share/rofi/themes/glue_pro_blue.rasi ~/Media/Code/Configs/glue_pro_blue.rasi \
 && rsync -av --delete ~/.config/fish/ ~/Media/Code/Configs/config/fish/ \
 && rsync -av --delete --exclude buffers --exclude backups ~/.config/micro/ ~/Media/Code/Configs/config/micro/ \
 && cp -av  ~/.bashrc ~/Media/Code/Configs/home/.bashrc \
