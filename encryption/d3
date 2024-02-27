@@ -1,0 +1,21 @@
+#!/bin/bash
+test -n "$1" || { echo "no input provided"; exit 1; }
+
+echo "enter the password"
+read -s password
+echo "trying to decrypt..."
+
+salt=$(head -n1 "$1" | tr -d '\n')
+
+hashed_password=$(echo -n "$password" | argon2 "$salt" -id -t 2 -m 21 -p 4 | grep Hash | rev | cut -b1-64 | rev)
+
+tmp_file=/tmp/e3
+tail -n +2 "$1" > /tmp/e3
+
+openssl enc -d -chacha20 -salt -pbkdf2 -iter 250000 -in $tmp_file -k "$hashed_password" > "/tmp/decrypted3_"$1""
+openssl enc -d -camellia-256-cbc -salt -pbkdf2 -iter 250000 -in "/tmp/decrypted3_"$1"" -k "$hashed_password" > "/tmp/decrypted3_2"$1""
+openssl enc -d -aes-256-cbc -salt -pbkdf2 -iter 250000 -in "/tmp/decrypted3_2"$1"" -k "$hashed_password"
+
+rm -f "/tmp/decrypted3_2"$1""
+rm -f "/tmp/decrypted3_"$1""
+rm -f /tmp/e3
