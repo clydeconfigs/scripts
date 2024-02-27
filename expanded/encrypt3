@@ -1,0 +1,18 @@
+#!/bin/bash
+test -n "$1" || { echo "no input provided"; exit 1; }
+
+echo "enter the password"
+read -s password
+echo "loading the heavy cavalry..."
+
+salt=$(openssl rand 12 | base64)
+
+hashed_password=$(echo -n "$password" | argon2 "$salt" -id -t 2 -m 21 -p 4 | grep Hash | rev | cut -b1-64 | rev)
+
+echo "$salt" > "$1".e3
+openssl enc -aes-256-cbc -salt -pbkdf2 -iter 250000 -in "$1" -k "$hashed_password" > "/tmp/encrypt3_"$1""
+openssl enc -camellia-256-cbc -salt -pbkdf2 -iter 250000 -in "/tmp/encrypt3_"$1"" -k "$hashed_password" > "/tmp/encrypt3_2"$1""
+openssl enc -chacha20 -salt -pbkdf2 -iter 250000 -in "/tmp/encrypt3_2"$1"" -k "$hashed_password" >> "$1".e3
+
+rm -f "/tmp/encrypt3_2"$1""
+rm -f "/tmp/encrypt3_"$1""
