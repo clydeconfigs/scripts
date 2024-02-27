@@ -1,0 +1,29 @@
+#!/bin/bash
+
+test -n "$1" || { echo "no input provided"; exit 1; }
+
+echo "enter the password"
+read -s password
+echo "trying to decrypt..."
+
+salt=$(head -n1 "$1" | tr -d '\n')
+
+hashed_password=$(echo -n "$password" | argon2 "$salt" -id -t 2 -m 21 -p 4 -l 90 | grep Hash | rev | cut -b1-90 | rev)
+
+length=${#hashed_password}
+third=$((length / 3))
+
+aes_key=$(echo $hashed_password | cut -c 1-$third)
+cam_key=$(echo $hashed_password | cut -c $((third + 1))-$((2 * third)))
+cha_key=$(echo $hashed_password | cut -c $((2 * third + 1))-)
+
+tmp_file=/tmp/e4
+tail -n +2 "$1" > /tmp/e4
+
+echo $cha_key | openssl enc -d -chacha20 -salt -pbkdf2 -iter 250000 -in $tmp_file -pass stdin > "/tmp/decrypted3_"$1""
+echo $cam_key | openssl enc -d -camellia-256-cbc -salt -pbkdf2 -iter 250000 -in "/tmp/decrypted3_"$1"" -pass stdin > "/tmp/decrypted3_2"$1""
+echo $aes_key | openssl enc -d -aes-256-cbc -salt -pbkdf2 -iter 250000 -in "/tmp/decrypted3_2"$1"" -pass stdin
+
+rm -f "/tmp/decrypted3_2"$1""
+rm -f "/tmp/decrypted3_"$1""
+rm -f /tmp/e4
