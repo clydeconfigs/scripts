@@ -1,12 +1,28 @@
 #!/bin/bash
 
-echo -n "$(tr -dc "a-z" </dev/urandom | head -c 10)" > /tmp/r && \
-where="xclip-$(cat /tmp/r)" && \
-(
-  xclip -selection clipboard -t image/jpeg -o > "$( [ "$(pwd)" != "$HOME" ] && echo "$where.jpeg" || echo "~/Desktop/$where.jpeg" )" && \
-  cjxl -e 9 --lossless_jpeg=1 "$( [ "$(pwd)" != "$HOME" ] && echo "$where.jpeg" || echo "~/Desktop/$where.jpeg" )" \
-  "$( [ "$(pwd)" != "$HOME" ] && echo "$where.jxl" || echo "~/Desktop/$where.jxl" )" && \
-  rm "$( [ "$(pwd)" != "$HOME" ] && echo "$where.jpeg" || echo "~/Desktop/$where.jpeg" )" || \
-  ( [ "$(pwd)" != "$HOME" ] && echo "error saving pic" || notify-send "error saving pic" )
-) > /dev/null 2>&1 &
+gen_name () {
+  echo "xclip-$(tr -dc "a-z" </dev/urandom | head -c 10)"
+}
+
+save () {
+  where="$savelocation""$filename"
+  xclip -selection clipboard -t image/jpeg -o > "$savelocation""$filename" && \
+  cjxl -e 9 --lossless_jpeg=1 $where $where.jxl
+  rm $where && \
+  notify-send -i "$(pwd)/$where.jxl" "saved at $where.jxl"
+  
+}
+
+filename=$(gen_name)
+
+if [ "$(pwd)" != "$HOME" ]; then
+  while true; do
+    test -e "$where" && where=$(gen_name) || break
+  done
+  savelocation=""
+  save &> /dev/null
+else
+  savelocation="$HOME/Desktop/"
+  save &> /dev/null
+fi
 
