@@ -4,13 +4,23 @@ gen_name () {
   echo "xclip-$(tr -dc "a-z" </dev/urandom | head -c 10)"
 }
 
+_convert () {
+  convert "$_where" -resize x100 /tmp/sa_icon.jpg
+}
+
 save () {
   where="$savelocation""$filename"
-  xclip -selection clipboard -t image/jpeg -o > "$savelocation""$filename" && \
+  xclip -selection clipboard -t image/jpeg -o > $where && \
   cjxl -e 9 --lossless_jpeg=1 $where $where.jxl
   rm $where && \
-  notify-send -i "$(pwd)/$where.jxl" "saved at $where.jxl"
-  
+  if [ "$(pwd)" != "$HOME" ]; then
+    _where="$(pwd)/$where.jxl"
+    _convert
+  else
+    _where=$where.jxl
+    _convert
+  fi
+  notify-send -i /tmp/sa_icon.jpg "saved at $where.jxl"
 }
 
 filename=$(gen_name)
@@ -20,9 +30,9 @@ if [ "$(pwd)" != "$HOME" ]; then
     test -e "$where" && where=$(gen_name) || break
   done
   savelocation=""
-  save &> /dev/null
 else
   savelocation="$HOME/Desktop/"
-  save &> /dev/null
 fi
+
+save &> /dev/null &
 
