@@ -5,22 +5,27 @@ gen_name () {
 }
 
 _convert () {
-  convert "$_where" -resize x100 /tmp/sa_icon.jpg
+  convert "$_where" -resize x170 /tmp/sa_icon.jpg
 }
 
 save () {
   where="$savelocation""$filename"
-  xclip -selection clipboard -t image/jpeg -o > $where && \
-  cjxl -e 9 --lossless_jpeg=1 $where $where.jxl
+  xclip -selection clipboard -t i
+  mage/png -o > $where && \
+  avifenc $where $where.avif || { dunstify "error saving pic"; exit 1; }
+  # cjxl $where $where.jxl
   rm $where && \
   if [ "$(pwd)" != "$HOME" ]; then
-    _where="$(pwd)/$where.jxl"
+    _where="$(pwd)/$where.avif"
     _convert
   else
-    _where=$where.jxl
+    _where=$where.avif
     _convert
   fi
-  notify-send -i /tmp/sa_icon.jpg "saved at $where.jxl"
+  
+  dunstify -i /tmp/sa_icon.jpg "saved at $where.avif"
+  rm /tmp/sa_icon.jpg
+
 }
 
 filename=$(gen_name)
