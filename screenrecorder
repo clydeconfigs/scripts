@@ -1,0 +1,8 @@
+
+#!/bin/bash
+
+folder="$HOME/Desktop/Recordings"
+
+mkdir "$folder"
+
+ffmpeg -f x11grab -s 1920x1080 -r 30 -i :0.0 -f alsa -i default -q:v 0 "$folder"/"recording$(date -R)".mp4

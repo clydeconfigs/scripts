@@ -1,23 +1,21 @@
 #!/bin/bash
 
-d=$(date -R)
-if [ -d "$HOME/Recordings/screenshot-recordings$d" ]; then
-    echo "The folder exists."
-else
-    mkdir "$HOME/Recordings/screenshot-recordings$d"
-fi
+mkdir $HOME/Desktop/Recordings
+mkdir $HOME/Desktop/Recordings/screenshot-recordings
 
 counter=1
-folder="$HOME/Recordings/screenshot-recordings$d"
+folder="$HOME/Desktop/Recordings/screenshot-recordings$(date -R)"
+
+mkdir "$folder"
 
 while true; do
     filename="$folder/screenshot_$counter.png"
 
-    scrot -pzq 1 -Z 9 "$filename"
+    scrot -pzq 1 -Z 9 "$filename" || exit 1
 
-    time avifenc "$filename" -o "$folder/screenshot_$counter.avif" 
+    time avifenc "$filename" -o "$folder/screenshot_$counter.avif" || exit 1
     
-    rm "$filename"
+    rm "$filename" || exit 1
 
     ((counter++))
     
