@@ -11,6 +11,7 @@ _convert () {
 save () {
   where="$savelocation""$filename"
   xclip -selection clipboard -type image/png -o > $where && \
+  echo $where | xclip -sel c
   avifenc $where $where.avif || { dunstify "error saving pic"; exit 1; }
   # cjxl $where $where.jxl
   rm $where && \
