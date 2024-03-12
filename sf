@@ -15,6 +15,9 @@ echo -e "$(tput setaf 39)
 $(tput sgr0)"
 
 #
-#  sfetch 1.0.1
-#  by clyde, on 18 feb 2024 at 16:39 CET
+#  sfetch 1.0.2
+#  created by clyde, on 18 feb 2024 at 16:39 CET
 #
+
+# clyde, on 3 mar 2024 at 15:33 CET 
+# 1.0.2 patch notes: added the "Disk" line
