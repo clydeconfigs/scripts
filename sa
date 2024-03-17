@@ -4,40 +4,18 @@ gen_name () {
   echo "xclip-$(tr -dc "a-z" </dev/urandom | head -c 10)"
 }
 
-_convert () {
-  convert "$_where" -resize x170 /tmp/sa_icon.jpg
-}
-
 save () {
-  where="$savelocation""$filename"
-  xclip -selection clipboard -type image/png -o > $where && \
-  echo $where | xclip -sel c
-  avifenc $where $where.avif || { dunstify "error saving pic"; exit 1; }
-  # cjxl $where $where.jxl
-  rm $where && \
+  filename=$(gen_name)
+
   if [ "$(pwd)" != "$HOME" ]; then
-    _where="$(pwd)/$where.avif"
-    _convert
+    while true; do
+      test -e "$filename" && filename=$(gen_name) || break
+    done
+    xclip -selection clipboard -t image/avif -o > $filename.avif
   else
-    _where=$where.avif
-    _convert
+    xclip -selection clipboard -t image/avif -o > "$HOME/Desktop/"$filename.avif
   fi
-  
-  dunstify -i /tmp/sa_icon.jpg "saved at $where.avif"
-  rm /tmp/sa_icon.jpg
-
 }
-
-filename=$(gen_name)
-
-if [ "$(pwd)" != "$HOME" ]; then
-  while true; do
-    test -e "$where" && where=$(gen_name) || break
-  done
-  savelocation=""
-else
-  savelocation="$HOME/Desktop/"
-fi
 
 save &> /dev/null &
 
