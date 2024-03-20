@@ -1,0 +1,7 @@
+filename="$HOME/Desktop/$(date -R).png"
+
+maim -s --format png /dev/stdout > $filename
+
+xclip -selection clipboard -t image/png -i "$filename"
+
+dunstify "saved at $HOME/Desktop/$(date -R).png"
