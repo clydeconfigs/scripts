@@ -1,7 +1,15 @@
-filename="$HOME/Desktop/$(date -R).png"
+filename="$HOME/Desktop/$(date -R)"
 
-maim -s --format png /dev/stdout > $filename
+maim "$filename"
+feh -x -F "$filename" &
+id=$!
+maim -s "$filename"
+kill $id
 
 xclip -selection clipboard -t image/png -i "$filename"
+
+avifenc "$filename" "$filename".avif
+
+{ sleep 60; rm "$filename"; } &
 
 dunstify "saved at $HOME/Desktop/$(date -R).png"
