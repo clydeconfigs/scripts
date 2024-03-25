@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 gen_name () {
   echo "xclip-$(tr -dc "a-z" </dev/urandom | head -c 10)"

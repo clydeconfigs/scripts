@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 get_gpu () {
      lspci | grep -i 'VGA' | awk -F': ' '{print $2}' | sed 's/(rev ..)//g' | head -n1 | sed -n 's/.*\[\(.*\)\].*/\1/p'

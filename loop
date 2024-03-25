@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 while true; do
 	touch '/tmp/loop_going_on'

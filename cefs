@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 sudo cryptsetup luksFormat /dev/$1
 sudo cryptsetup luksOpen /dev/$1 $1

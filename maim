@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 filename="$HOME/Desktop/$(date -R)"
 
 maim "$filename"
