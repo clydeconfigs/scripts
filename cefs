@@ -1,6 +1,13 @@
 #!/usr/bin/bash
 
-sudo cryptsetup luksFormat /dev/$1
-sudo cryptsetup luksOpen /dev/$1 $1
-sudo mkfs.btrfs /dev/mapper/$1
+sudo cryptsetup luksFormat /dev/$1 || exit 1
+sudo cryptsetup luksOpen /dev/$1 $1 || exit 1
+sudo mkfs.btrfs /dev/mapper/$1 || exit 1
+
+sudo mkdir /mnt/ecfs
+sudo mount /dev/mapper/$1 /mnt/ecfs || exit 1
+me="$(whoami)"
+sudo chown -R "$me":"$me" /mnt/ecfs || exit 1
+
+sudo umount /mnt/ecfs || exit 1
 sudo cryptsetup luksClose $1
