@@ -2,7 +2,7 @@
 
 filename="$HOME/Desktop/$(date -R)"
 
-maim "$filename"
+maim -u "$filename"
 feh -x -F "$filename" &
 id=$!
 maim -s "$filename"
