@@ -1,21 +1,23 @@
 #!/usr/bin/bash
 
-mkdir $HOME/Desktop/Recordings
-mkdir $HOME/Desktop/Recordings/screenshot-recordings
+set -e 
+
+test -e "$HOME/Desktop/Recordings" || mkdir "$HOME/Desktop/Recordings"
+test -e "$HOME/Desktop/Recordings/screenshot-recordings" || mkdir "$HOME/Desktop/Recordings/screenshot-recordings"
 
 counter=1
 folder="$HOME/Desktop/Recordings/screenshot-recordings$(date -R)"
 
-mkdir "$folder"
+test -e "$folder" || mkdir "$folder"
 
 while true; do
     filename="$folder/screenshot_$counter.png"
 
-    scrot -pzq 1 -Z 9 "$filename" || exit 1
+    maim --format png /dev/stdout > "$filename"
 
-    time avifenc "$filename" -o "$folder/screenshot_$counter.avif" || exit 1
+    time avifenc "$filename" -o "$folder/screenshot_$counter.avif"
     
-    rm "$filename" || exit 1
+    rm "$filename"
 
     ((counter++))
     
