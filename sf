@@ -14,15 +14,129 @@ cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' 
 gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf 39)"
 disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3"/"$2 }'))$(tput setaf 39)"
 
-element[0]=$packages
-element[1]=$kernel
-element[2]=$shell
-element[3]=$term
+element=(
+  "$packages"
+  "$kernel"
+  "$shell"
+  "$term"
+  "$disk"
+  "$ram"
+  "$cpu"
+  "$gpu"
+)
 
-element[4]=$disk
-element[5]=$ram
-element[6]=$cpu
-element[7]=$gpu
+display_cpu=true
+display_gpu=true
+display_disk=true
+display_ram=true
+
+remove() {
+    new_array=()
+    for item in "${element[@]}"; do
+        if [[ "$item" != "$1" ]]; then
+            new_array+=("$item")
+        fi
+    done
+    element=("${new_array[@]}")
+}
+
+help() {
+    echo "help: you can chose elements to not display:
+-c --no-cpu
+-g --no-gpu
+-d --no-disk
+-r --no-ram
+-s --no-shell
+-p --no-packages
+-k --no-kernel
+-t --no-term"
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -t|--no-term)
+            remove "$term"
+            shift
+            ;;
+        -k|--no-kernel)
+            remove "$kernel"
+            shift
+            ;;
+        -p|--no-packages)
+            remove "$packages"
+            shift
+            ;;
+        -s|--no-shell)
+            remove "$shell"
+            shift
+            ;;
+        -c|--no-cpu)
+            remove "$cpu"
+            shift
+            ;;
+        -g|--no-gpu)
+            remove "$gpu"
+            shift
+            ;;
+        -d|--no-disk)
+            remove "$disk"
+            shift
+            ;;
+        -r|--no-ram)
+            remove "$ram"
+            shift
+            ;;
+        -h|--help)
+            help
+            exit 0
+            ;;
+       -*)
+            arg="${1#-}"
+            for ((i = 0; i < ${#arg}; i++)); do
+                case "${arg:$i:1}" in
+                    t)
+                        remove "$term"
+                        shift
+                        ;;
+                    k)
+                        remove "$kernel"
+                        shift
+                        ;;
+                    p)
+                        remove "$packages"
+                        shift
+                        ;;
+                    s)
+                        remove "$shell"
+                        shift
+                        ;;
+                    c)
+                        remove "$cpu"
+                        shift
+                        ;;
+                    g)
+                        remove "$gpu"
+                        shift
+                        ;;
+                    d)
+                        remove "$disk"
+                        shift
+                        ;;
+                    r)
+                        remove "$ram"
+                        shift
+                        ;;
+                esac
+            done
+            shift
+            ;;
+        *)
+            echo "unknown option '$1'"
+            help
+            exit 1
+            ;;
+    esac
+done
 
 test -z "$(get_gpu)" && element[7]=""
 
@@ -42,7 +156,7 @@ $(tput sgr0)                              $(for c in $(seq 1 6); do tput setaf $
 "
 
 #
-#  sfetch 1.1.1
+#  sfetch 1.2
 #  created by clyde, on 18 feb 2024 at 16:39 CET
 #
 
@@ -57,3 +171,6 @@ $(tput sgr0)                              $(for c in $(seq 1 6); do tput setaf $
 
 # clyde, on 3 apr 2024 09:03 CEST (time change)
 # 1.1.1 patch notes: added colors at the bottom
+
+# clyde, on 5 apr 2024 17:36 CEST (time change)
+# 1.2 patch notes: added options to ignore elements
