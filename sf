@@ -42,54 +42,18 @@ remove() {
 
 help() {
     echo "help: you can chose elements to not display:
--c --no-cpu
--g --no-gpu
--d --no-disk
--r --no-ram
--s --no-shell
--p --no-packages
--k --no-kernel
--t --no-term"
+-c: no cpu
+-g: no gpu
+-d: no disk
+-r: no ram
+-s: no shell
+-p: no packages
+-k: no kernel
+-t: no term"
 }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -t|--no-term)
-            remove "$term"
-            shift
-            ;;
-        -k|--no-kernel)
-            remove "$kernel"
-            shift
-            ;;
-        -p|--no-packages)
-            remove "$packages"
-            shift
-            ;;
-        -s|--no-shell)
-            remove "$shell"
-            shift
-            ;;
-        -c|--no-cpu)
-            remove "$cpu"
-            shift
-            ;;
-        -g|--no-gpu)
-            remove "$gpu"
-            shift
-            ;;
-        -d|--no-disk)
-            remove "$disk"
-            shift
-            ;;
-        -r|--no-ram)
-            remove "$ram"
-            shift
-            ;;
-        -h|--help)
-            help
-            exit 0
-            ;;
        -*)
             arg="${1#-}"
             for ((i = 0; i < ${#arg}; i++)); do
@@ -126,6 +90,10 @@ while [[ $# -gt 0 ]]; do
                         remove "$ram"
                         shift
                         ;;
+                    h)
+                        help
+                        exit 0
+                        ;;
                 esac
             done
             shift
@@ -156,7 +124,7 @@ $(tput sgr0)                              $(for c in $(seq 1 6); do tput setaf $
 "
 
 #
-#  sfetch 1.2
+#  sfetch 1.2.1
 #  created by clyde, on 18 feb 2024 at 16:39 CET
 #
 
@@ -174,3 +142,4 @@ $(tput sgr0)                              $(for c in $(seq 1 6); do tput setaf $
 
 # clyde, on 5 apr 2024 17:36 CEST (time change)
 # 1.2 patch notes: added options to ignore elements
+# 1.2.1 patch notes: cleaned the code and removed long options like --no-cpu
