@@ -1,0 +1,8 @@
+#!/usr/bin/fish
+
+set minutes (math $argv[1] "*" 60)
+notify-send "alarm will sound in $argv[1] minutes at $(date -d "$(date -R) + $argv[1] minutes" "+%H:%M:%S")"
+sleep $minutes
+while true
+	mpv ~/Media/Random/Alarm\ Sound\ Effect.opus
+end

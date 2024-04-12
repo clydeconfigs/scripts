@@ -1,3 +1,27 @@
 #!/usr/bin/python3
 
-import random,string,sys; print(''.join(random.choices(string.ascii_lowercase + string.digits, k=int(sys.argv[1]) if len(sys.argv) > 1 else 4)))
+import random,string,sys,requests
+
+
+def main():
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "phrase":
+            response = requests.get("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
+            words = response.text.splitlines()
+            
+            random_words = random.sample(words, 6)
+            for v in random_words:
+                print(v, end=" ")
+
+            print()
+            exit()
+
+        if sys.argv[1] == "secure":
+            print("s")
+            exit()
+            
+    print(''.join(random.choices(string.ascii_lowercase + string.digits, k=int(sys.argv[1]) if len(sys.argv) > 1 else 4)))
+    
+
+if __name__ == "__main__":
+    main()
