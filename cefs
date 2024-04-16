@@ -1,13 +1,15 @@
 #!/usr/bin/bash
 
-sudo cryptsetup luksFormat /dev/$1 || exit 1
-sudo cryptsetup luksOpen /dev/$1 $1 || exit 1
-sudo mkfs.btrfs /dev/mapper/$1 || exit 1
+N=$(echo -n "$1" | sed 's/.*\///' | rev | sed -E 's/(.*)/\1/' | rev)
+
+sudo cryptsetup luksFormat "$1" || exit 1
+sudo cryptsetup luksOpen "$1" "$N" || exit 1
+sudo mkfs.btrfs /dev/mapper/"$N" || exit 1
 
 sudo mkdir /mnt/ecfs
-sudo mount /dev/mapper/$1 /mnt/ecfs || exit 1
+sudo mount /dev/mapper/"$N" /mnt/"$N" || exit 1
 me="$(whoami)"
-sudo chown -R "$me":"$me" /mnt/ecfs || exit 1
+sudo chown -R "$me":"$me" /mnt/"$N" || exit 1
 
-sudo umount /mnt/ecfs || exit 1
-sudo cryptsetup luksClose $1
+sudo umount /mnt/"$N" || exit 1
+sudo cryptsetup luksClose "$N"
