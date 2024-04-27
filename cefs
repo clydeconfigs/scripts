@@ -6,7 +6,7 @@ sudo cryptsetup luksFormat "$1" || exit 1
 sudo cryptsetup luksOpen "$1" "$N" || exit 1
 sudo mkfs.btrfs /dev/mapper/"$N" || exit 1
 
-sudo mkdir /mnt/ecfs
+sudo mkdir /mnt/"$N"
 sudo mount /dev/mapper/"$N" /mnt/"$N" || exit 1
 me="$(whoami)"
 sudo chown -R "$me":"$me" /mnt/"$N" || exit 1
