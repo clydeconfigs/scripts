@@ -2,11 +2,17 @@
 
 import sys
 
-def base58_encode(num, alphabet):
+def base94_encode(num, alphabet):
     result = ''
     while num > 0:
         result = alphabet[num % 94] + result
         num //= 94
+    return result
+
+def base94_decode(encoded, alphabet):
+    result = 0
+    for char in encoded:
+        result = result * 94 + alphabet.index(char)
     return result
 
 def string_to_hex(s):
@@ -17,14 +23,29 @@ def hex_to_decimal(hex_str):
 
 alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
-try:
-    while True:
-        binary_data = sys.stdin.buffer.read()
-        if not binary_data:
-            break
-        hex_string = string_to_hex(binary_data)
-        decimal = hex_to_decimal(hex_string)
-        base58_encoded = base58_encode(decimal, alphabet)
-        print(base58_encoded)
-except EOFError:
-    pass
+if len(sys.argv) > 1 and sys.argv[1] == "-d":
+    try:
+        while True:
+            encoded_data = sys.stdin.readline().strip()
+            if not encoded_data:
+                break
+            decimal = base94_decode(encoded_data, alphabet)
+            hex_string = hex(decimal)[2:]
+            if len(hex_string) % 2 == 1:
+                hex_string = '0' + hex_string
+            binary_data = bytes.fromhex(hex_string)
+            sys.stdout.buffer.write(binary_data)
+    except EOFError:
+        pass
+else:
+    try:
+        while True:
+            binary_data = sys.stdin.buffer.read()
+            if not binary_data:
+                break
+            hex_string = string_to_hex(binary_data)
+            decimal = hex_to_decimal(hex_string)
+            base94_encoded = base94_encode(decimal, alphabet)
+            print(base94_encoded)
+    except EOFError:
+        pass
