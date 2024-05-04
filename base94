@@ -1,0 +1,30 @@
+#!/usr/bin/python
+
+import sys
+
+def base58_encode(num, alphabet):
+    result = ''
+    while num > 0:
+        result = alphabet[num % 94] + result
+        num //= 94
+    return result
+
+def string_to_hex(s):
+    return s.hex()
+
+def hex_to_decimal(hex_str):
+    return int(hex_str, 16)
+
+alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+
+try:
+    while True:
+        binary_data = sys.stdin.buffer.read()
+        if not binary_data:
+            break
+        hex_string = string_to_hex(binary_data)
+        decimal = hex_to_decimal(hex_string)
+        base58_encoded = base58_encode(decimal, alphabet)
+        print(base58_encoded)
+except EOFError:
+    pass
