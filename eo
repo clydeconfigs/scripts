@@ -1,0 +1,15 @@
+#!/usr/bin/fish
+
+if test (count $argv) -eq 1
+    set device $argv[1]
+
+    set lol (basename $device)
+
+    if not test -e /mnt/$lol
+        sudo mkdir /mnt/$lol
+    end
+
+    sudo cryptsetup luksOpen $device $lol
+    sudo mount /dev/mapper/$lol /mnt/$lol || exit 1
+    echo "[eo] mounted at /mnt/$lol"
+end
