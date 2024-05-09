@@ -9,7 +9,3 @@ while true; do
 	xinput set-prop " USB OPTICAL MOUSE" "libinput Accel Speed" -1
 	sleep 6
 done
-
-#xrdb -merge ~/.Xresources
-#^^^^^^^^^^^^^^^^^^^^^^^^^
-#maybe add this
