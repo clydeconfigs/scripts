@@ -8,21 +8,23 @@ get_gpu () {
 
 case $NAME in
     "Arch Linux") 
-    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l) / $(pacman -Qq | wc -l)$(tput setaf 39)"
+    color=39
+    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l) / $(pacman -Qq | wc -l)$(tput setaf "$color")"
     ;;
     "Debian GNU/Linux") 
+    color=1
     packages="Packages: $(tput sgr0)$(dpkg-query -l | grep ^ii | awk '{print $2}' | wc -l)$(tput setaf 1)"
     ;;
 esac
 
-kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf 39)"
-shell="Shell: $(tput sgr0)$(echo $SHELL)$(tput setaf 39)"
-term="Term: $(tput sgr0)$(echo $TERM)$(tput setaf 39)"
+kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf $color)"
+shell="Shell: $(tput sgr0)$(echo $SHELL)$(tput setaf $color)"
+term="Term: $(tput sgr0)$(echo $TERM)$(tput setaf $color)"
 
-ram="RAM: $(tput sgr0)$(free --mega | awk '/^Mem:/ {print $3 "MB" " / " $2 "MB"}') "$(tput setaf 39)""
-cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}' | sed 's/with.*$//'))$(tput setaf 39)"
-gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf 39)"
-disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3"/"$2 }'))$(tput setaf 39)"
+ram="RAM: $(tput sgr0)$(free --mega | awk '/^Mem:/ {print $3 "MB" " / " $2 "MB"}') "$(tput setaf $color)""
+cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}' | sed 's/with.*$//'))$(tput setaf $color)"
+gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf $color)"
+disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3"/"$2 }'))$(tput setaf $color)"
 
 element=(
   "$packages"
@@ -93,7 +95,7 @@ test -z "$(get_gpu)" && remove "$gpu"
 
 case $NAME in
     "Arch Linux") 
-    echo -e "$(tput setaf 39)
+    echo -e "$(tput setaf $color)
      _             _
     / \   _ __ ___| |__       ${element[0]}
    / _ \ | '__/ __| '_ \\      ${element[1]}
@@ -127,7 +129,7 @@ esac
 
 #
 #  sfetch 1.2.1
-#  created by clyde, on 18 feb 2024 at 16:39 CET
+#  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 
 # clyde, on 3 mar 2024 at 15:33 CET 
