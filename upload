@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 e=$(gpg -c --pinentry-mode loopback --passphrase "jfojofvjsoefvijfovsijoisdjofsidjf" | base64 | curl -F 'file=@-' -Fsecret= 0x0.st | sed 's/http/https/g') 
 echo "$e"
 echo "$e" | xclip -sel c

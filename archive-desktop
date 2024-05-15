@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+cd /home/clyde/Desktop || exit 1
+if [ "$(pwd)" != "/home/clyde/Desktop" ]; then
+    echo "FATAL: current directory is not equal to /home/clyde/Desktop"
+    exit 1
+fi
+new_dir="$(date +"%D%T" | sed 's./.-.g')"
+sudo mkdir desktop-archive/"$new_dir"
+sudo mv * desktop-archive/"$new_dir"/
