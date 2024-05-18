@@ -1,12 +1,15 @@
 #!/usr/bin/bash
 
-while true; do
-	touch '/tmp/loop_going_on'
+mkdir '/tmp/loop_going_on'
+log="/tmp/loop_going_on/log"
 
-	xmodmap -e "clear Lock" -e "keycode 66 = backslash" 2>> /tmp/loop_going_on
+while true; do
+	xmodmap -e "clear Lock" -e "keycode 66 = backslash" 2>> $log
+	
 	xinput set-prop "SINOWEALTH GXT 970 Gaming Mouse" "libinput Accel Speed" -0.5 || \
 	xinput set-prop "TPPS/2 IBM TrackPoint" "libinput Accel Speed" -1 || \
 	xinput set-prop " USB OPTICAL MOUSE" "libinput Accel Speed" -1 || \
+	xinput set-prop "SIGMACHIP Usb Mouse" -1 || \
 	xinput set-prop "PixArt HP 100 105 USB Optical Mouse" libinput Accel Speed -1 || \
 	xinput set-prop "YSPRINGTECH USB OPTICAL MOUSE" "libinput Accel Speed" -1
 	sleep 6

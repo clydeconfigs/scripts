@@ -3,5 +3,5 @@
 case $2 in
 	"1") tput bold; echo -n "-> "; tput setaf 1; echo "$1"; tput sgr0;;
 	"2") tput setaf 63; echo -n " * "; tput setaf 12; echo "$1"; tput sgr0;;
-	*) tput setaf 39; echo -n "-> "; tput setaf 6; echo "$1"; tput sgr0;;
+	*) tput setaf 39; echo -n "-> "; tput setaf 25; echo "$1"; tput sgr0;;
 esac

@@ -11,5 +11,5 @@ sudo mount /dev/mapper/"$N" /mnt/"$N" || exit 1
 me="$(whoami)"
 sudo chown -R "$me":"$me" /mnt/"$N" || exit 1
 
-sudo umount /mnt/"$N" || exit 1
+sudo umount /mnt/"$N"
 sudo cryptsetup luksClose "$N"
