@@ -9,7 +9,7 @@ if test (count $argv) -eq 1
         sudo cryptsetup luksClose $lol || exit 1
         echo "[ec] unmounted"
     else
-        sudo umount /mnt/$lol || exit 1
+        sudo umount /mnt/$lol || sudo umount $device || exit 1
         echo "[ec] unmounted"
     end
 end
