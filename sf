@@ -25,7 +25,7 @@ ram="RAM: $(tput sgr0)$(free --mega | awk '/^Mem:/ {print $3 "MB" " / " $2 "MB"}
 cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}' | sed 's/with.*$//'))$(tput setaf $color)"
 gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf $color)"
 disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3"/"$2 }'))$(tput setaf $color)"
-
+wm="WM: $(tput sgr0)$(xprop -id $(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}') -notype -f _NET_WM_NAME 8t | grep "WM_NAME" | cut -f2 -d \")$(tput setaf $color)"
 element=(
   "$packages"
   "$kernel"
@@ -35,6 +35,7 @@ element=(
   "$ram"
   "$cpu"
   "$gpu"
+  "$wm"
   ""
   "$(for c in $(seq 1 6); do tput setaf $c; echo -n "██"; done; tput sgr0; echo)$(tput setaf 39)"
 )
@@ -63,7 +64,8 @@ help() {
 -s: no shell
 -p: no packages
 -k: no kernel
--t: no term"
+-t: no term
+-w: no wm"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -80,6 +82,7 @@ while [[ $# -gt 0 ]]; do
                     g) remove "$gpu"; shift;;
                     d) remove "$disk"; shift;;
                     r) remove "$ram"; shift;;
+                    w) remove "$wm"; shift;;
                     h) help; exit 0;;
                 esac
             done
@@ -111,7 +114,7 @@ echo -e "$(tput setaf 39)
    +++++++     ++++++      ${element[7]}
   ++++             ++++    ${element[8]}
  ++                   ++   ${element[9]} 
-+                       +  
++                       +  ${element[10]} 
 $(tput sgr0)";;
 
     "Debian GNU/Linux") 
