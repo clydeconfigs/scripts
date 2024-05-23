@@ -2,14 +2,26 @@
 
 if test (count $argv) -eq 1
     set device $argv[1]
-
     set lol (basename $device)
 
-    if not test -e /mnt/$lol
-        sudo mkdir /mnt/$lol
+    if not echo $device | grep "/dev/"
+        if echo $device | grep -qE '^sd[a-z].*$'
+            echo "warning: type the entire location (e.g. /dev/sda, not sda)"
+            set device /dev/$device
+            echo defaulting to $device
+        else
+            echo "finding a file with that name... (make sure this file exists)"
+            exit 1
+        end
     end
 
-    sudo cryptsetup luksOpen $device $lol
-    sudo mount /dev/mapper/$lol /mnt/$lol || exit 1
-    echo "[eo] mounted at /mnt/$lol"
+    if sudo cryptsetup isLuks $device >/dev/null
+        sudo cryptsetup luksOpen $device $lol || exit 1
+        sudo mount --mkdir /dev/mapper/$lol /mnt/$lol || exit 1
+        echo "[eo] mounted cryptfs at /mnt/$lol"
+    else
+        sudo mkdir /mnt/$lol 2>/dev/null
+        sudo mount $device /mnt/$lol || exit 1
+        echo "[eo] mounted at /mnt/$lol"
+    end
 end
