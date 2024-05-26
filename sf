@@ -121,19 +121,19 @@ $(tput sgr0)";;
 
     "Debian GNU/Linux") 
 echo -e "$(tput setaf 1)
-          #######           $(tput bold)$(tput setaf 1)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf 1)            
-      ################      $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf 1)             
-    #####           ####    ${element[0]}             
-   ###                ###   ${element[1]}             
+          #######          $(tput bold)$(tput setaf 1)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf 1)            
+      ################     $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf 1)             
+    #####           ####   ${element[0]}             
+   ###                ###  ${element[1]}             
   ##          ###     ###  ${element[2]}             
- ###        ##    #    ##   ${element[3]}             
- ##        #       #   ##   ${element[4]}             
+ ###        ##    #    ##  ${element[3]}             
+ ##        #       #   ##  ${element[4]}             
  ##       ##          ##   ${element[5]}             
- ##        #     #    #     ${element[6]}             
- ##         ##      ##      ${element[7]}             
-  ##          ####          ${element[8]}             
-   ##                       ${element[9]}             
-    ##                      ${element[10]}             
+ ##        #     #    #    ${element[6]}             
+ ##         ##      ##     ${element[7]}             
+  ##          ####         ${element[8]}             
+   ##                      ${element[9]}             
+    ##                     ${element[10]}             
      ##                                  
        ###                               
           ##             
