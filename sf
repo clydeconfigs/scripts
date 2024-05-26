@@ -5,7 +5,7 @@ source /etc/os-release
 case $NAME in
     "Arch Linux") 
     color=39
-    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l) / $(pacman -Qq | wc -l)$(tput setaf "$color")"
+    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l), $(pacman -Qq | wc -l) total$(tput setaf "$color")"
     ;;
     "Debian GNU/Linux") 
     color=1
