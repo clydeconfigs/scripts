@@ -1,9 +1,10 @@
 #!/usr/bin/bash
 
-test -z $1 && {
-	e=$(gpg -c --pinentry-mode loopback | base64 | curl -F 'file=@-' -Fsecret= 0x0.st | sed 's/http/https/g') 
-	echo "$e"
-	echo "$e" | xclip -sel c
-} || {
-	echo "pipe it"
-}
+echo -n "are you sure? "
+read -r yn </dev/tty
+
+if [ "$yn" = "y" ] || [ "$yn" = "Y" ] || [ "$yn" = "yes" ]; then
+    curl -F 'file=@-' -F secret= 0x0.st
+else
+    echo "operation cancelled"
+fi

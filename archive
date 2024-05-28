@@ -6,5 +6,6 @@ if [ "$(pwd)" != "/home/clyde/Desktop" ]; then
     exit 1
 fi
 new_dir="$(date +"%D%T" | sed 's./.-.g')"
+mkdir desktop-archive
 sudo mkdir desktop-archive/"$new_dir"
 sudo mv * desktop-archive/"$new_dir"/

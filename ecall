@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+message()  {
+  case $2 in
+  	"1") tput bold; echo -n "-> "; tput setaf 1; echo "$1"; tput sgr0;;
+  	"2") tput setaf 63; echo -n " * "; tput setaf 12; echo "$1"; tput sgr0;;
+  	*) tput setaf 39; echo -n "-> "; tput setaf 25; echo "$1"; tput sgr0;;
+  esac
+}
+mounted_fs=$(mount | grep '^/dev/mapper/' | awk '{print $3}' | grep -v '^/$') || {
+  message "no devices to close =)" 2
+  exit 0
+}
+
+for fs in $mounted_fs; 
+do
+  device=$(basename $fs)
+  message "syncing..." 
+  sync
+  message "unmounting $fs..."
+  sudo umount $fs
+  if [ $? -ne 0 ]; then
+    message "failed to unmount $fs" 1
+    exit 1
+  fi
+  message "closing /dev/mapper/$device..."
+  sudo cryptsetup close $device
+  if [ $? -ne 0 ]; then
+    message "failed to close /dev/mapper/$device..." 1
+    exit 1
+  fi
+done
+
+message "all cryptsetup devices closed successfully!" 2
