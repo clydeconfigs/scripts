@@ -1,19 +1,38 @@
 #!/usr/bin/fish
 
+function message
+    switch $argv[2]
+        case "1" 
+            tput bold; echo -n "-> "; tput setaf 1; echo "$argv[1]"; tput sgr0
+        case "2" 
+            tput setaf 63; echo -n " * "; tput setaf 12; echo "$argv[1]"; tput sgr0
+        case '*' 
+            tput setaf 39; echo -n "-> "; tput setaf 25; echo "$argv[1]"; tput sgr0
+    end
+end
+
 if test (count $argv) -eq 1
     set device $argv[1]
     set lol (basename $device)
 
-    if sudo cryptsetup isLuks $device >/dev/null
-        sudo umount /dev/mapper/$lol || exit 1
-        sudo cryptsetup luksClose $lol || exit 1
-        echo "[ec] unmounted"
+    if sudo cryptsetup isLuks /dev/$lol >/dev/null
+        message "unmounting..."
+        sudo umount /mnt/$lol || {
+            message "failed to unmount /mnt/$lol..." 1
+            exit 1
+        }
+        message "closing /dev/mapper/$device..."
+        sudo cryptsetup close $lol || {
+            message "failed to close /dev/mapper/$device..." 1
+            exit 1
+        }
+        message "all cryptsetup devices closed successfully!" 2
     else
+        message "unmounting..."
         sudo umount /mnt/$lol || sudo umount $device || exit 1
-        echo "[ec] unmounted"
+        message "all devices closed successfully!" 2
     end
 end
 
-echo "syncing..."
+message "syncing..."
 sync
-echo "sync done..."
