@@ -1,8 +1,43 @@
-#!/usr/bin/fish
+#!/usr/bin/env python3
 
-set minutes (math $argv[1] "*" 60)
-notify-send "alarm will sound in $argv[1] minutes at $(date -d "$(date -R) + $argv[1] minutes" "+%H:%M:%S")"
-sleep $minutes
-while true
-	mpv ~/Media/Random/Alarm\ Sound\ Effect.opus
-end
+import os
+import sys
+import subprocess
+import time
+from datetime import datetime, timedelta
+
+def display_progress(minutes):
+    total_ticks = int(minutes * 60)
+    terminal_width = os.get_terminal_size().columns // 2
+    ticks_per_section = max(1, int(total_ticks / terminal_width))
+    for i in range(total_ticks):        
+        progress = int((i / (total_ticks + 8)) * 100)
+        time_passed = i
+        time_left = total_ticks - time_passed
+        time_passed_min, time_passed_sec = divmod(time_passed, 60)
+        time_left_min, time_left_sec = divmod(time_left, 60)
+        sys.stdout.write("\r[{0}{1}] {2}% | {3:02d}:{4:02d}/{5:02d}:{6:02d}".format(
+            "█" * progress, " " * (terminal_width - progress - 1), progress * 100 // (terminal_width - 1), time_passed_min,
+            time_passed_sec, time_left_min, time_left_sec))
+        sys.stdout.flush()
+        time.sleep(1)
+    print()
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: {} <minutes>".format(sys.argv[0]))
+        sys.exit(1)
+
+    minutes = int(sys.argv[1])
+    notify_command = ['notify-send', f'Alarm will sound in {minutes} minutes at {(datetime.now() + timedelta(minutes=minutes)).strftime("%H:%M:%S")}']
+    subprocess.run(notify_command)
+
+    display_progress(minutes)
+
+    alarm_sound = os.path.expanduser("~/Media/Random/Alarm Sound Effect.opus")
+
+    while True:
+        subprocess.run(['mpv', alarm_sound])
+
+if __name__ == "__main__":
+    main()
