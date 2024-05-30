@@ -13,28 +13,31 @@ function message
     end
 end
 
-if test (count $argv) -eq 1
-    set device $argv[1]
-    set lol (basename $device)
+set device $argv[1]
+set lol (basename $device)
 
-    if not echo $device | grep "/dev/"
-        if echo $device | grep -qE '^sd[a-z].*$'
-            message "warning: entire location detected (use properly!, e.g. /dev/sda, not sda)" 3
-            set device /dev/$device
-            message "defaulting to $device"
-        else
-            message "finding a file with that name... (make sure this file exists)"
-            exit 1
-        end
-    end
-
-    if sudo cryptsetup isLuks $device >/dev/null
-        sudo cryptsetup luksOpen $device $lol || exit 1
-        sudo mount --mkdir /dev/mapper/$lol /mnt/$lol || exit 1
-        message "mounted cryptfs at /mnt/$lol"
+if not echo $device | grep "/dev/"
+    if echo $device | grep -qE '^sd[a-z].*$'
+        message "warning: entire location detected (use properly!, e.g. /dev/sda, not sda)" 3
+        set device /dev/$device
+        message "defaulting to $device"
     else
-        sudo mkdir /mnt/$lol 2>/dev/null
-        sudo mount $device /mnt/$lol || exit 1
-        message "mounted at /mnt/$lol"
+        message "finding a file with that name... (make sure this file exists)"
+        exit 1
     end
+end
+
+
+if sudo cryptsetup isLuks $device >/dev/null
+    test -z "$argv[2]" || begin
+        sudo cryptsetup luksOpen $device $lol --key-file "$argv[2]" || exit 1
+    end && begin
+        sudo cryptsetup luksOpen $device $lol || exit 1
+    end
+    sudo mount --mkdir /dev/mapper/$lol /mnt/$lol || exit 1
+    message "mounted cryptfs at /mnt/$lol"
+else
+    sudo mkdir /mnt/$lol 2>/dev/null
+    sudo mount $device /mnt/$lol || exit 1
+    message "mounted at /mnt/$lol"
 end
