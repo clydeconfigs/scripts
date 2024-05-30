@@ -15,23 +15,17 @@ if test (count $argv) -eq 1
     set device $argv[1]
     set lol (basename $device)
 
-    if sudo cryptsetup isLuks /dev/$lol >/dev/null
-        message "unmounting..."
-        sudo umount /mnt/$lol || begin
-            message "failed to unmount /mnt/$lol..." 1
-            exit 1
-        end
-        message "closing /dev/mapper/$device..."
-        sudo cryptsetup close $lol || begin
-            message "failed to close /dev/mapper/$device..." 1
-            exit 1
-        end
-        message "all cryptsetup devices closed successfully!" 2
-    else
-        message "unmounting..."
-        sudo umount /mnt/$lol || sudo umount $device || exit 1
-        message "all devices closed successfully!" 2
+    message "unmounting..."
+    sudo umount /mnt/$lol || begin
+        message "failed to unmount /mnt/$lol..." 1
+        exit 1
     end
+    message "closing $lol..."
+    sudo cryptsetup close $lol || begin
+        message "failed to close $lol, but /mnt/$lol was unmounted" 1
+        exit 1
+    end
+    message "all cryptsetup devices closed successfully!" 2
 end
 
 message "syncing..."
