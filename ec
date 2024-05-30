@@ -17,15 +17,15 @@ if test (count $argv) -eq 1
 
     if sudo cryptsetup isLuks /dev/$lol >/dev/null
         message "unmounting..."
-        sudo umount /mnt/$lol || {
+        sudo umount /mnt/$lol || begin
             message "failed to unmount /mnt/$lol..." 1
             exit 1
-        }
+        end
         message "closing /dev/mapper/$device..."
-        sudo cryptsetup close $lol || {
+        sudo cryptsetup close $lol || begin
             message "failed to close /dev/mapper/$device..." 1
             exit 1
-        }
+        end
         message "all cryptsetup devices closed successfully!" 2
     else
         message "unmounting..."

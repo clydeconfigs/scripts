@@ -29,10 +29,10 @@ end
 
 
 if sudo cryptsetup isLuks $device >/dev/null
-    test -z "$argv[2]" || begin
-        sudo cryptsetup luksOpen $device $lol --key-file "$argv[2]" || exit 1
-    end && begin
+    if test -z "$argv[2]"
         sudo cryptsetup luksOpen $device $lol || exit 1
+    else
+        sudo cryptsetup luksOpen $device $lol --key-file "$argv[2]" || exit 1
     end
     sudo mount --mkdir /dev/mapper/$lol /mnt/$lol || exit 1
     message "mounted cryptfs at /mnt/$lol"
