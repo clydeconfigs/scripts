@@ -23,7 +23,6 @@ if not echo $device | grep "/dev/"
         message "defaulting to $device"
     else
         message "finding a file with that name... (make sure this file exists)"
-        exit 1
     end
 end
 
