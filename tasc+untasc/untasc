@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+test -e "$(echo "$1" | sed 's/.tsc$/.tar/g')" && { 
+	exit 1
+}
+
+scrypt dec "$1" > "$(echo "$1" | sed 's/.tsc$/.tar/g')" && {
+	tar -xf "$(echo "$1" | sed 's/.tsc$/.tar/g')"
+}
+
+rm "$(echo "$1" | sed 's/.tsc$/.tar/g')"
+

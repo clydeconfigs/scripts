@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+test -e "$1".tar && { 
+	exit 1
+}
+
+tar -cf "$1".tar "$1" && \
+scrypt enc --logN 21 -r8 -p1 "$1".tar "$1".tsc
+
+rm "$1".tar
