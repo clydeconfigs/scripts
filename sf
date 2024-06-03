@@ -163,37 +163,54 @@ echo -e "
      #######      ###         ${element[9]} 
        ###############        ${element[10]}
           ##########        
-";;
+$(tput sgr0)";;
 esac
 
+
+
+
+
+
+
+
+#      _                 _       __      _       _
+#  ___(_)_ __ ___  _ __ | | ___ / _| ___| |_ ___| |__
+# / __| | '_ ` _ \| '_ \| |/ _ | |_ / _ | __/ __| '_ \
+# \__ | | | | | | | |_) | |  __|  _|  __| || (__| | | |
+# |___|_|_| |_| |_| .__/|_|\___|_|  \___|\__\___|_| |_|
+#                 |_|
+           
 #
-#  sfetch 1.4
+#  simplefetch / sfetch / sf 1.6
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
-#                     lol 39 got replaced by $color
+#                     lol, 39 got replaced by $color
 
-# clyde, on 3 mar 2024 at 15:33 CET 
-# 1.0.2 patch notes: added the "Disk" line
+    # clyde, on 3 mar 2024 at 15:33 CET 
+    # 1.0.2 patch notes: added the "Disk" line
 
-# clyde, on 12 mar 2024 at 08:33 CET
-# 1.0.3 patch notes: made the code cleaner with variables
+    # clyde, on 12 mar 2024 at 08:33 CET
+    # 1.0.3 patch notes: made the code cleaner with variables
 
-# clyde, on 25 mar 2024 23:49 CET
-# 1.1 patch notes: created more extensibility with $_1, $_2, etc.
+    # clyde, on 25 mar 2024 23:49 CET
+    # 1.1 patch notes: created more extensibility with $_1, $_2, etc.
 
-# clyde, on 3 apr 2024 09:03 CEST (time change)
-# 1.1.1 patch notes: added colors at the bottom
+    # clyde, on 3 apr 2024 09:03 CEST (time change)
+    # 1.1.1 patch notes: added colors at the bottom
 
-# clyde, on 5 apr 2024 17:36 CEST (time change)
-# 1.2 patch notes: added options to ignore elements
-# 1.2.1 patch notes: cleaned the code and removed long options like --no-cpu
+    # clyde, on 5 apr 2024 17:36 CEST 
+    # 1.2 patch notes: added options to ignore elements
+    # 1.2.1 patch notes: cleaned the code and removed long options like --no-cpu
 
-# clyde, on 12 may 2024 02:03 CEST (time change)
-# 1.3 patch notes: added debian support!
+    # clyde, on 12 may 2024 02:03 CEST 
+    # 1.3 patch notes: added debian support!
 
-# clyde, on 23 may 2024 23:11 CEST (time change)
-# 1.4 patch notes: changed the logo to a MUCH cooler one!
+    # clyde, on 23 may 2024 23:11 CEST 
+    # 1.4 patch notes: changed the logo to a MUCH cooler one!
 
-# clyde, on 26 may 2024 17:49 CEST (time change)
-# 1.5 patch notes: changed debian logo, add uptime, etc.
+    # clyde, on 26 may 2024 17:49 CEST 
+    # 1.5 patch notes: changed debian logo, add uptime, etc.
+
+    # clyde, on 03 jun 2024 11:09 CEST 
+    # 1.6 patch notes: created support for Void
 
