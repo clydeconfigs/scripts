@@ -10,7 +10,7 @@ while true; do
 	xinput set-prop "TPPS/2 IBM TrackPoint" "libinput Accel Speed" -1 || \
 	xinput set-prop " USB OPTICAL MOUSE" "libinput Accel Speed" -1 || \
 	xinput set-prop "SIGMACHIP Usb Mouse" -1 || \
-	xinput set-prop "PixArt HP 100 105 USB Optical Mouse" libinput Accel Speed -1 || \
+	xinput set-prop "PixArt HP 100 105 USB Optical Mouse" "libinput Accel Speed" -1 || \
 	xinput set-prop "YSPRINGTECH USB OPTICAL MOUSE" "libinput Accel Speed" -1
 	sleep 6
 done
