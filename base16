@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+if [ "$#" -gt 1 ]; then
+	hexdump -v -e '/1 "%02x"'
+else
+	hexdump -v -e '/1 "%02x"' $@
+fi

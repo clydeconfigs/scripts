@@ -1,10 +1,17 @@
 #!/usr/bin/bash
 
-echo -n "are you sure? "
+cat "$1" | curl -F 'file=@-' -F secret= 0x0.st
+
+echo -n "are you sure you want to upload? (y/n) 
+($(file $1))
+"
+
 read -r yn </dev/tty
 
 if [ "$yn" = "y" ] || [ "$yn" = "Y" ] || [ "$yn" = "yes" ]; then
-    curl -F 'file=@-' -F secret= 0x0.st
+    e=$(cat "$1" | curl -F 'file=@-' -F secret= 0x0.st)
+    echo "$e"
+    echo "$e" | xclip -sel c
 else
     echo "operation cancelled"
 fi
