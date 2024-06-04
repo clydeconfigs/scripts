@@ -18,6 +18,10 @@ case $NAME in
     color=42
     packages="Packages: $(tput sgr0)$(xbps-query -m | wc -l), $(xbps-query -l | wc -l) total$(tput setaf $color)"
     ;;
+    "NixOS") 
+    color=7
+    packages="Packages: $(tput sgr0)$(nix-env -q | wc -l), $(nix-store --query --requisites /run/current-system/ | sort -u | wc -l) total$(tput setaf $color)"
+    ;;
 esac
 
 get_gpu () {
@@ -164,6 +168,26 @@ echo -e "
        ###############        ${element[10]}
           ##########        
 $(tput sgr0)";;
+
+    "NixOS")
+
+echo -e "
+       [1;34m*[0m[1;34m*[0m[1;34m*[0m     ****   ***       \e[1m\e[38;5;39m$(whoami)\e[0m@\e[38;5;39m$(cat /proc/sys/kernel/hostname)\e[0m
+        [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ********        \e[0m$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)\e[38;5;39m
+         [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ******         ${element[0]}
+    [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m****    [1;34m*[0m[1;34m*[0m    ${element[1]} 
+         ***        ***  [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m   ${element[2]} 
+        ***          ***[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ${element[3]} 
+ *********            *[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m ${element[4]} 
+ ********[1;34m*[0m            [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m ${element[5]} 
+    ****[1;34m*[0m[1;34m*[0m[1;34m*[0m          [1;34m*[0m[1;34m*[0m[1;34m*[0m        ${element[6]} 
+   ****  [1;34m*[0m[1;34m*[0m[1;34m*[0m        [1;34m*[0m[1;34m*[0m[1;34m*[0m         ${element[7]} 
+    **    [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m**************    ${element[8]} 
+         [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ****         ${element[9]} 
+        [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ****        ${element[10]} 
+       [1;34m*[0m[1;34m*[0m[1;34m*[0m   [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m     ***       
+       "
+
 esac
 
 
@@ -185,7 +209,7 @@ esac
 #
      
 #
-#  simplefetch / sfetch / sf 1.6
+#  simplefetch / sfetch / sf 1.6.1
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 #                     lol, 39 got replaced by $color
@@ -218,3 +242,5 @@ esac
     # clyde, on 03 jun 2024 11:09 CEST 
     # 1.6 patch notes: created support for Void
 
+    # clyde, on 04 jun 2024 03:37 CEST 
+    # 1.6.1 patch notes: created support for NixOS
