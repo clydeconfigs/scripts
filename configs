@@ -1,0 +1,41 @@
+#!/usr/bin/bash
+
+uncommited() {
+    _uncommited=$(git ls-files --others)
+    echo "$_uncommited" | head -n 15
+    count=$(echo "$_uncommited" | wc -l)
+    if [ "$count" -gt 3 ]; then
+        echo "..."
+    fi
+}
+cd $HOME/Media/Code
+cd Configs
+echo -e "\e[42m-------"
+echo "Configs:"
+uncommited
+cd ../scripts
+echo "-------"
+echo -e "\e[45mscripts:"
+uncommited
+cd ../rofi
+echo "-------"
+echo -e "\e[44mrofi:"
+uncommited
+
+echo -e "\e[0m\n"
+
+read -p "do you want to commit? (yes/no): " choice
+
+if [[ $choice =~ ^[Yy](es)?$ ]]; then
+	cd $HOME/Media/Code/Configs
+	git add *
+	git commit -m 'automated commit'
+	cd $HOME/Media/Code/scripts
+	git add *
+	git commit -m 'automated commit'
+	cd $HOME/Media/Code/rofi
+	git add *
+	git commit -m 'automated commit'
+else
+	exit 1
+fi
