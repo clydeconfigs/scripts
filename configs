@@ -32,13 +32,13 @@ read -p "do you want to commit? (yes/no): " choice
 if [[ $choice =~ ^[Yy](es)?$ ]]; then
 	cd $HOME/Media/Code/Configs
 	git add *
-	git commit -m 'automated commit'
+	git commit -m 'automated commit' -v
 	cd $HOME/Media/Code/scripts
 	git add *
-	git commit -m 'automated commit'
+	git commit -m 'automated commit' -v
 	cd $HOME/Media/Code/rofi
 	git add *
-	git commit -m 'automated commit'
+	git commit -m 'automated commit' -v
 else
 	exit 1
 fi
