@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 uncommited() {
-    _uncommited=$(git ls-files --others)
+    _uncommited=$(git diff --name-only)
     echo "$_uncommited" | head -n 15
     count=$(echo "$_uncommited" | wc -l)
     if [ "$count" -gt 3 ]; then
@@ -10,16 +10,19 @@ uncommited() {
 }
 cd $HOME/Media/Code
 cd Configs
-echo -e "\e[42m-------"
+echo -e "\e[45m"
+echo "-------"
 echo "Configs:"
 uncommited
 cd ../scripts
+echo -e "\e[46m"
 echo "-------"
-echo -e "\e[45mscripts:"
+echo "scripts:"
 uncommited
 cd ../rofi
+echo -e "\e[41m"
 echo "-------"
-echo -e "\e[44mrofi:"
+echo "rofi:"
 uncommited
 
 echo -e "\e[0m\n"
