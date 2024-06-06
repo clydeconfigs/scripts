@@ -33,12 +33,15 @@ if [[ $choice =~ ^[Yy](es)?$ ]]; then
 	cd $HOME/Media/Code/Configs
 	git add *
 	git commit -m 'automated commit'
+	git push
 	cd $HOME/Media/Code/scripts
 	git add *
 	git commit -m 'automated commit'
+	git push
 	cd $HOME/Media/Code/rofi
 	git add *
 	git commit -m 'automated commit'
+	git push
 else
 	exit 1
 fi
