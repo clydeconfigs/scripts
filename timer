@@ -16,7 +16,7 @@ def display_progress(minutes):
         time_left = total_ticks - time_passed
         time_passed_min, time_passed_sec = divmod(time_passed, 60)
         time_left_min, time_left_sec = divmod(time_left, 60)
-        sys.stdout.write("\r[{0}{1}] {2}% | {3:02d}:{4:02d}/{5:02d}:{6:02d}".format(
+        sys.stdout.write("\r{3:02d}:{4:02d}/{5:02d}:{6:02d}".format(
             "█" * progress, " " * (terminal_width - progress - 1), progress * 100 // (terminal_width - 1), time_passed_min,
             time_passed_sec, time_left_min, time_left_sec))
         sys.stdout.flush()
