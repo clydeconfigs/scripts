@@ -1,9 +1,15 @@
 #!/usr/bin/bash
 
 uncommited() {
-    _uncommited=$(git diff --name-only)
+    _uncommited=$(git status | sed -n '/Untracked files:/,/^$/ { /./ { p; }; /^$/ { N; /\n$/ { p; q; }; } }' | grep -v "<file>")
+    _uncommited2=$(git status | sed -n '/Changes not staged for commit:/,/^$/ { /./ { p; }; /^$/ { N; /\n$/ { p; q; }; } }' | grep -v "<file>")
     echo "$_uncommited" | head -n 15
     count=$(echo "$_uncommited" | wc -l)
+    if [ "$count" -gt 3 ]; then
+        echo "..."
+    fi
+    echo "$_uncommited2" | head -n 15
+    count=$(echo "$_uncommited2" | wc -l)
     if [ "$count" -gt 3 ]; then
         echo "..."
     fi

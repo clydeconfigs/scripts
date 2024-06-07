@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 mkdir '/tmp/loop_going_on'
+chmod 700 '/tmp/loop_going_on'
 log="/tmp/loop_going_on/log"
 
 while true; do
