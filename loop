@@ -6,6 +6,8 @@ log="/tmp/loop_going_on/log"
 
 while true; do
 	xmodmap -e "clear Lock" -e "keycode 66 = backslash" 2>> $log
+
+	xinput --disable "SynPS/2 Synaptics TouchPad"
 	
 	xinput set-prop "SINOWEALTH GXT 970 Gaming Mouse" "libinput Accel Speed" -0.5 || \
 	xinput set-prop "TPPS/2 IBM TrackPoint" "libinput Accel Speed" -1 || \
