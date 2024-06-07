@@ -1,0 +1,37 @@
+#!/bin/bash
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+BALANCE_FILE="/tmp/money"
+
+echo 
+
+test ! -e $BALANCE_FILE && {
+    echo -e "${GREEN}You won 100 coins!${NC}"
+    echo 100 > $BALANCE_FILE
+}
+
+gamble() {
+    echo "You have $current_money coins in your wallet."
+    echo "Placing a bet of $1 at $2X..."
+    current_money=$((current_money - $1))
+    result=$((RANDOM % $2))
+
+    if [ $result -eq 0 ]; then
+        echo -e "${GREEN}You won $(($1 * $2)) coins!${NC}"
+        current_money=$((current_money + $1 * $2))
+    else
+        echo -e "${RED}You lost $1 coins.${NC}"
+    fi
+
+    echo "Current money: $current_money"
+    echo $current_money > $BALANCE_FILE
+}
+
+current_money=$(cat $BALANCE_FILE)
+
+gamble $1 $2
+
+echo 

@@ -1,0 +1,46 @@
+#!/bin/bash
+
+GREY='\033[0;90m'
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+roll_die() {
+    echo $(( RANDOM % 6 + 1 ))
+}
+
+calculate_hand() {
+    local hand=("$@")
+    local sum=0
+    for die in "${hand[@]}"; do
+        sum=$((sum + die))
+    done
+    echo $sum
+}
+
+player_turn() {
+    local hand=()
+    while true; do
+        hand+=($(roll_die))
+        local hand_value=$(calculate_hand "${hand[@]}")
+        echo -n "${hand[@]} ($hand_value)"
+        if (( hand_value == 21 )); then
+            echo -e "${GREEN} 21! You win by ace!${NC}"
+            return 0
+        fi
+        if (( hand_value > 21 )); then
+            echo -e "${RED} Bust! You lose!${NC}"
+            return 0
+        fi
+        echo -en " ${GREY}Do you want to roll again? (y/n): ${NC}"
+        read choice
+        if [[ "$choice" != "y" ]]; then
+            break
+        fi
+    done
+    echo -e "${YELLOW}Your final hand: ${hand[@]} (Total: $hand_value)${NC}"
+}
+
+echo "Welcome to Dice Blackjack!"
+player_turn
