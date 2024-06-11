@@ -4,6 +4,7 @@ source /etc/os-release
 
 # change here if you want to fake your distro (?)
 # NAME="Distro Name"
+NAME="NixOS"
 
 case $NAME in
     "Arch Linux") 
@@ -46,6 +47,7 @@ get_shell () {
     esac
 }
 
+hostname="Hostname: $(tput sgr0)$(cat /sys/class/dmi/id/product_name | awk '{print $1" "$2}')$(tput setaf $color)"
 os_release="Release: $(tput sgr0)$PRETTY_NAME$(tput setaf $color)"
 kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf $color)"
 uptime="Uptime: $(tput sgr0)$(uptime -p | sed 's/up //g')$(tput setaf $color)"
@@ -59,6 +61,7 @@ gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf $color)"
 # wm="WM: $(tput sgr0)$(xprop -id $(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}') -notype -f _NET_WM_NAME 8t | grep "WM_NAME" | cut -f2 -d \")$(tput setaf $color)"
 
 element=(
+  "$hostname"
   "$os_release"
   "$packages"
   "$kernel"
@@ -150,6 +153,7 @@ echo -e "$(tput setaf $color)
  ++                   ++   ${element[9]} 
 +                       +  ${element[10]} 
                            ${element[11]} 
+                           ${element[12]} 
 $(tput sgr0)";;
 
     "Artix Linux")
@@ -168,7 +172,7 @@ echo -e "$(tput setaf $color)
    xxxxxxxxxx      xxxxxxx     ${element[9]} 
   xxxxxx           xxxxxxxx    ${element[10]} 
  xxx                     xxx   ${element[11]}
-xx                         xx
+xx                         xx  ${element[12]}
 $(tput sgr0)";;
 
     "Debian GNU/Linux") 
@@ -187,7 +191,7 @@ echo -e "$(tput setaf 1)
    ##                      ${element[9]}             
     ##                     ${element[10]}             
      ##                    ${element[11]}             
-       ###                               
+       ###                 ${element[12]}              
           ##             
 $(tput sgr0)";;
 
@@ -207,7 +211,8 @@ echo -e "
      #######      ###         ${element[9]} 
        ###############        ${element[10]}
           ##########          ${element[11]}
-$(tput sgr0)";;
+                              ${element[12]}
+$(tput sgr0)";; 
 
     "NixOS")
 echo -e "
@@ -225,6 +230,7 @@ echo -e "
          [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ****         ${element[9]} 
         [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ****        ${element[10]} 
        [1;34m*[0m[1;34m*[0m[1;34m*[0m   [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m     ***       ${element[11]}
+                                ${element[12]}
        "
 
 esac
@@ -288,5 +294,5 @@ esac
     # 1.7.1 patch notes: improved shell variable, adding get_shell()
 
     # clyde, on 11 jun 2024 14:25 CEST 
-    # 1.8 patch notes: add Artix support and os_release variable
+    # 1.8 patch notes: add Artix support and os_release and hostname variable
 
