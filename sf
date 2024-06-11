@@ -4,7 +4,6 @@ source /etc/os-release
 
 # change here if you want to fake your distro (?)
 # NAME="Distro Name"
-NAME="NixOS"
 
 case $NAME in
     "Arch Linux") 
