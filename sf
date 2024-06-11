@@ -4,10 +4,15 @@ source /etc/os-release
 
 # change here if you want to fake your distro (?)
 # NAME="Distro Name"
+NAME="Artix Linux"
 
 case $NAME in
     "Arch Linux") 
     color=39
+    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l), $(pacman -Qq | wc -l) total$(tput setaf "$color")"
+    ;;
+    "Artix Linux")
+    color=6
     packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l), $(pacman -Qq | wc -l) total$(tput setaf "$color")"
     ;;
     "Debian GNU/Linux") 
@@ -42,14 +47,14 @@ get_shell () {
     esac
 }
 
-uptime="Uptime: $(tput sgr0)$(uptime -p | sed 's/up //g')$(tput setaf $color)"
 kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf $color)"
+uptime="Uptime: $(tput sgr0)$(uptime -p | sed 's/up //g')$(tput setaf $color)"
 shell="Shell: $(tput sgr0)$(get_shell)$(tput setaf $color)"
 term="Term: $(tput sgr0)$(echo $TERM)$(tput setaf $color)"
+disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3" / "$2 }'))$(tput setaf $color)"
 ram="RAM: $(tput sgr0)$(free --mega | awk '/^Mem:/ {print $3 "MB" " / " $2 "MB"}') "$(tput setaf $color)""
 cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}' | sed 's/with.*$//'))$(tput setaf $color)"
 gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf $color)"
-disk="Disk: $(tput sgr0)$(echo $(df -H | grep " /\b" -v | tail -n1 | awk '{ print $3" / "$2 }'))$(tput setaf $color)"
 # battery="Battery: $(tput sgr0)$(acpi -b)$(tput setaf $color)"
 # wm="WM: $(tput sgr0)$(xprop -id $(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}') -notype -f _NET_WM_NAME 8t | grep "WM_NAME" | cut -f2 -d \")$(tput setaf $color)"
 
@@ -101,7 +106,7 @@ while [[ $# -gt 0 ]]; do
             arg="${1#-}"
             for ((i = 0; i < ${#arg}; i++)); do
                 case "${arg:$i:1}" in
-                    v | V) echo "1.7.1"; exit 0;;
+                    v | V) echo "1.8"; exit 0;;
                     t) remove "$term"; shift;;
                     k) remove "$kernel"; shift;;
                     p) remove "$packages"; shift;;
@@ -129,9 +134,9 @@ test -z "$(get_gpu)" && remove "$gpu"
 how_many_lines=$(echo $(whoami)$(cat /proc/sys/kernel/hostname) | wc -c)
 case $NAME in
     "Arch Linux")
-echo -e "$(tput setaf 39)            
-            +              $(tput bold)$(tput setaf 39)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf 39)
-           +++             $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf 39)
+echo -e "$(tput setaf $color)            
+            +              $(tput bold)$(tput setaf $color)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf $color)
+           +++             $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf $color)
           +++++            ${element[0]}
          + +++++           ${element[1]}
         +++ +++++          ${element[2]}
@@ -143,6 +148,25 @@ echo -e "$(tput setaf 39)
   ++++             ++++    ${element[8]}
  ++                   ++   ${element[9]} 
 +                       +  ${element[10]} 
+$(tput sgr0)";;
+
+    "Artix Linux")
+echo -e "$(tput setaf $color)            
+              x              $(tput bold)$(tput setaf $color)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf $color)
+             xxx             $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf $color)
+            xxxxx            ${element[0]}
+           xxxxxxx           ${element[1]}
+          xxxxxxxxx          ${element[2]}
+            xxxxxxxx         ${element[3]}
+        x      xxxxxx        ${element[4]}
+       xxxxxxx     xxx       ${element[5]}
+      xxxxxxxxxxxx    +      ${element[6]}
+     xxxxxxxxxxxxxxxxxx      ${element[7]}
+    xxxxxxxxxxxxxx     xx    ${element[8]}
+   xxxxxxxxxx      xxxxxxx   ${element[9]} 
+  xxxxxx           xxxxxxxx  ${element[10]} 
+ xxx                     xxx 
+xx                         xx
 $(tput sgr0)";;
 
     "Debian GNU/Linux") 
@@ -166,7 +190,6 @@ echo -e "$(tput setaf 1)
 $(tput sgr0)";;
 
     "Void")
-
 echo -e "
           $(tput setaf $color)++++++++++          $(tput bold)$(tput setaf $color)$(whoami)$(tput sgr0)@$(tput sgr0)$(cat /proc/sys/kernel/hostname)$(tput setaf $color)
         +++++++++++++++       $(tput sgr0)$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)$(tput setaf $color)
@@ -185,7 +208,6 @@ echo -e "
 $(tput sgr0)";;
 
     "NixOS")
-
 echo -e "
        [1;34m*[0m[1;34m*[0m[1;34m*[0m     ****   ***       \e[1m\e[38;5;39m$(whoami)\e[0m@\e[38;5;39m$(cat /proc/sys/kernel/hostname)\e[0m
         [1;34m*[0m[1;34m*[0m[1;34m*[0m[1;34m*[0m    ********        \e[0m$(for ((i=0; i<how_many_lines+1; i++)); do printf "%s" "―"; done)\e[38;5;39m
@@ -224,7 +246,7 @@ esac
 #
      
 #
-#  simplefetch / sfetch / sf 1.7.1
+#  simplefetch / sfetch / sf 1.8
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 #                     lol, 39 got replaced by $color
@@ -262,3 +284,7 @@ esac
 
     # clyde, on 09 jun 2024 15:26 CEST 
     # 1.7.1 patch notes: improved shell variable, adding get_shell()
+
+    # clyde, on 11 jun 2024 14:25 CEST 
+    # 1.8 patch notes: add Artix support
+
