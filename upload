@@ -1,7 +1,5 @@
 #!/usr/bin/bash
 
-cat "$1" | curl -F 'file=@-' -F secret= 0x0.st
-
 echo -n "are you sure you want to upload? (y/n) 
 ($(file $1))
 "
@@ -13,5 +11,5 @@ if [ "$yn" = "y" ] || [ "$yn" = "Y" ] || [ "$yn" = "yes" ]; then
     echo "$e"
     echo "$e" | xclip -sel c
 else
-    echo "operation cancelled"
+    message "operation cancelled" 1
 fi
