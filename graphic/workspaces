@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+workspaces=$(i3-msg -t get_workspaces)
+
+notify-send -t 1000 $(echo "$workspaces" | jq -r -c '.[] | "\(.name) \(.urgent | if . == true then "*" else "" end)" ' | paste -sd "," - | tr -d ' ')
