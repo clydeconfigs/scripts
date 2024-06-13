@@ -1,5 +1,32 @@
-#!/usr/bin/bash
+#!/bin/bash
 
+# Get the workspace information from i3
 workspaces=$(i3-msg -t get_workspaces)
 
-notify-send -t 1000 $(echo "$workspaces" | jq -r -c '.[] | "\(.name) \(.urgent | if . == true then "*" else "" end)" ' | paste -sd "," - | tr -d ' ')
+# Define a function to check if a workspace is focused
+is_focused() {
+    focused=$(echo "$workspaces" | jq -r ".[] | select(.focused == true and .name == \"$1\")")
+    if [ ! -z "$focused" ]; then
+        echo "<"
+    fi
+}
+
+# Define a function to check if a workspace is urgent
+is_urgent() {
+    urgent=$(echo "$workspaces" | jq -r ".[] | select(.urgent == true and .name == \"$1\")")
+    if [ ! -z "$urgent" ]; then
+        echo "*"
+    fi
+}
+
+# Iterate over each workspace
+output=""
+for name in $(echo "$workspaces" | jq -r '.[].name'); do
+    focused=$(is_focused "$name")
+    urgent=$(is_urgent "$name")
+    output="$output$name$focused$urgent, "
+done
+
+# Remove trailing comma and space
+output="${output%, }"
+notify-send -t 3000 "$output"
