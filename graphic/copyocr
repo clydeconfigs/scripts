@@ -1,0 +1,9 @@
+tmpfile=$(mktemp /tmp/copyocr-XXXXXX.png)
+
+maim -u "$tmpfile"
+feh -x -F "$tmpfile" &
+id=$!
+maim -s "$tmpfile"
+kill $id
+
+tesseract "$tmpfile" - -l eng | xclip -sel clip && rm "$tmpfile"
