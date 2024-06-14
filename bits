@@ -10040,12 +10040,12 @@ echo -e "\033[1mbit entropy:\033[0m" $(qalc -t "log2(${product})")
 
 hr
 
-echo "(imaginary PBKDF2 settings, at a million guesses per second)"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 / 60 / 24 // 365); echo -e "\033[1m years\033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 / 60 // 24); echo -e "\033[1m days \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 // 60); echo -e "\033[1m hours \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 // 60); echo -e "\033[1m minutes \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" // 1000000); echo -e "\033[1m seconds \033[0m"
+echo "(imaginary PBKDF2 settings, at a 5 million guesses per second)"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 5000000 / 60 / 60 / 24 // 365); echo -e "\033[1m years\033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 5000000 / 60 / 60 // 24); echo -e "\033[1m days \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 5000000 / 60 // 60); echo -e "\033[1m hours \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 5000000 // 60); echo -e "\033[1m minutes \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" // 5000000); echo -e "\033[1m seconds \033[0m"
 
 hr
 
