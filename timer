@@ -34,7 +34,7 @@ def main():
 
     display_progress(minutes)
 
-    alarm_sound = os.path.expanduser("~/Media/Random/Alarm Sound Effect.opus")
+    alarm_sound = os.path.expanduser("~/media/Random/Alarm Sound Effect.opus")
 
     while True:
         subprocess.run(['mpv', alarm_sound])

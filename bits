@@ -10002,13 +10002,17 @@ configurations
 poison
 "
 
+hr () {
+	echo "――――――――――――――――――――――――――――――――――――――――――――――――――――――――"
+}
+
 result=$(for word in $1; do
     grepd=$(echo "$top10000english" | grep -n "\<$word\>")
     echo $grepd;
     test -z $grepd && { exit 1; }
 done; exit 0) || { echo "some word not found in 10000 dictionary" ; exit 1; }
 
-echo "========================"
+hr
 
 echo "$result"
 
@@ -10019,18 +10023,40 @@ while IFS= read -r line; do
     product=$(echo $product "*" $line | bc)
 done <<< "$string"
 
-echo "========================"
+product2=1
+while IFS= read -r line; do
+    product2=$(echo $product2 "+" $line | bc)
+done <<< "$string"
+
+hr 
+
+echo -ne "\033[1maverage word length: \033[0m"
+echo $(qalc -t "$product2 // "$(echo "$string" | wc -l)"")
+
+hr
 
 echo -e "\033[1mpossibilities:\033[0m $product"
 echo -e "\033[1mbit entropy:\033[0m" $(qalc -t "log2(${product})")
 
-echo "========================"
+hr
 
-echo "(minimum PBKDF2 settings, at 100 thousand iterations per second)"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 100000 / 60 / 60 / 24 // 365); echo -e "\033[1m years\033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 100000 / 60 / 60 // 24); echo -e "\033[1m days \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 100000 / 60 // 60); echo -e "\033[1m hours \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 100000 // 60); echo -e "\033[1m minutes \033[0m"
-echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" // 100000); echo -e "\033[1m seconds \033[0m"
+echo "(imaginary PBKDF2 settings, at a million guesses per second)"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 / 60 / 24 // 365); echo -e "\033[1m years\033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 / 60 // 24); echo -e "\033[1m days \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 / 60 // 60); echo -e "\033[1m hours \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" / 1000000 // 60); echo -e "\033[1m minutes \033[0m"
+echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" // 1000000); echo -e "\033[1m seconds \033[0m"
 
-echo "========================"
+hr
+
+calculate_rating() {
+    local value=$1
+
+    local result=$(qalc -t "((9 * $value + 118) // 127)")
+    echo "RATING: $result/10 IGN®"
+}
+
+value=$(qalc -t "log2(${product})")
+calculate_rating $value
+
+hr 

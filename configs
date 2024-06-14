@@ -14,7 +14,7 @@ uncommited() {
         echo "..."
     fi
 }
-cd $HOME/Media/Code
+cd $HOME/media/code
 cd Configs
 echo -e "\e[45m"
 echo "-------"
@@ -36,15 +36,15 @@ echo -e "\e[0m\n"
 read -p "do you want to commit? (yes/no): " choice
 
 if [[ $choice =~ ^[Yy](es)?$ ]]; then
-	cd $HOME/Media/Code/Configs
+	cd $HOME/media/code/Configs
 	git add *
 	git commit -m 'automated commit'
 	git push
-	cd $HOME/Media/Code/scripts
+	cd $HOME/media/code/scripts
 	git add *
 	git commit -m 'automated commit'
 	git push
-	cd $HOME/Media/Code/rofi
+	cd $HOME/media/code/rofi
 	git add *
 	git commit -m 'automated commit'
 	git push
