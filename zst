@@ -3,7 +3,7 @@
 if test (count $argv) -eq 2
     set -x ZSTD_CLEVEL $argv[2]
 else
-    set -x ZSTD_CLEVEL 19
+    set -x ZSTD_CLEVEL 10
 end
 
 if string match -q "*/" "$argv[1]"

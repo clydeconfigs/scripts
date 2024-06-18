@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-filename="$HOME/Desktop/$(date -R)"
+filename="$HOME/recordings/$(date +"%s%N" | base32)"
 
 maim -u "$filename"
 feh -x -F "$filename" &
@@ -12,6 +12,9 @@ xclip -selection clipboard -t image/png -i "$filename"
 
 avifenc "$filename" "$filename".avif
 
-{ sleep 60; rm "$filename"; } &
+# to delete the png file
+# { sleep 60; rm "$filename"; } &
 
-dunstify "saved at $HOME/Desktop/$(date -R).png"
+mv "$filename" "$filename".png
+
+dunstify "saved at $HOME/recordings/screenshot$(date -R).png"

@@ -1,0 +1,12 @@
+disable() {
+	xmodmap -e "keycode 64 = NoSymbol"
+}
+enable () {
+	xmodmap -e "keycode 64 = Alt_L"
+}
+
+test "$(xmodmap -pke | grep 'keycode  64' | awk '{print $4}')" == "Alt_L" && {
+	disable
+} || {
+	enable
+}
