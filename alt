@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 disable() {
 	xmodmap -e "keycode 64 = NoSymbol"
 }

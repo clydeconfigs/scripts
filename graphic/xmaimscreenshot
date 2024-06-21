@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+filename="$HOME/recordings/$(date +"%s%N" | base32)"
+
+maim -u "$filename"
+feh -x -F "$filename" &
+id=$!
+maim -s "$filename"
+kill $id
+
+xclip -selection clipboard -t image/png -i "$filename"
+
+avifenc "$filename" "$filename".avif
+
+# to delete the png file
+# { sleep 60; rm "$filename"; } &
+
+mv "$filename" "$filename".png
+
+dunstify "saved at $HOME/recordings/screenshot$(date -R).png"

@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+
+set -e 
+
+test -e "$HOME/recordings" || mkdir "$HOME/recordings"
+test -e "$HOME/recordings/screenshot-recordings" || mkdir "$HOME/recordings/screenshot-recordings"
+
+counter=1
+folder="$HOME/recordings/screenshot-recordings$(date -R)"
+
+test -e "$folder" || mkdir "$folder"
+
+while true; do
+    filename="$folder/screenshot_$counter.png"
+
+    maim --format png /dev/stdout > "$filename"
+
+    time avifenc "$filename" -o "$folder/screenshot_$counter.avif"
+    
+    rm "$filename"
+
+    ((counter++))
+    
+done
