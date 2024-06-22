@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 tmpfile=$(mktemp /tmp/copyocr-XXXXXX.png)
 
 maim -u "$tmpfile"
