@@ -109,7 +109,7 @@ while [[ $# -gt 0 ]]; do
             arg="${1#-}"
             for ((i = 0; i < ${#arg}; i++)); do
                 case "${arg:$i:1}" in
-                    v | V) echo "1.8.1"; exit 0;;
+                    v | V) echo "1.8.2"; exit 0;;
                     o) remove "$os_release"; shift;;
                     h) remove "$hostname"; shift;;
                     t) remove "$term"; shift;;
@@ -255,7 +255,7 @@ esac
 #
      
 #
-#  simplefetch / sfetch / sf 1.8.1
+#  simplefetch / sfetch / sf 1.8.2
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 #                     lol, 39 got replaced by $color
@@ -299,4 +299,7 @@ esac
 
     # clyde, on 13 jun 2024 15:07 CEST 
     # 1.8.1 patch notes: make Arch logo bigger
+
+    # clyde, on 13 jun 2024 15:07 CEST 
+    # 1.8.2 patch notes: add percentages in Disk and RAM, and put the / together
 
