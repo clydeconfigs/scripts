@@ -10,4 +10,5 @@ if string match -q "*/" "$argv[1]"
     set -x argv[1] (string split "" $argv[1] | head -n -1 | string join "")
 end
 
+echo "ZSTD_CLEVEL: $ZSTD_CLEVEL"
 tar --zstd -cvf "$argv[1].tar.zst" "$argv[1]"

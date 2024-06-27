@@ -10049,14 +10049,16 @@ echo -ne "\033[1mguessed in in:\033[0m" $(qalc -t "$product" // 5000000); echo -
 
 hr
 
-calculate_rating() {
-    local value=$1
-
-    local result=$(qalc -t "((9 * $value + 118) // 127)")
-    echo "RATING: $result/10 IGN®"
+scale_value() {
+  local value=$1
+  result=$(qalc -t "10^(($value/70)^0.5)")
+  echo -n $(printf "%.0f" $result)
+ echo "/10 IGN®"
 }
 
+
+
 value=$(qalc -t "log2(${product})")
-calculate_rating $value
+scale_value $value
 
 hr 
