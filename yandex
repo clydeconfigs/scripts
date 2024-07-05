@@ -1,0 +1,6 @@
+link=$(curl -Fsecret= -F "url=$(xclip -sel c -o)" https://0x0.st)
+
+firefox https://lens.google.com/uploadbyurl?url="$link"
+
+echo https://lens.google.com/uploadbyurl?url="$link"
+echo $(xclip -sel c -o)
