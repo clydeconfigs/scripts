@@ -5,7 +5,7 @@ filename="$HOME/recordings/$(date +"%s%N" | base32)"
 maim -u "$filename"
 feh -x -F "$filename" &
 id=$!
-maim -s "$filename"
+maim --hidecursor -s "$filename"
 kill $id
 
 xclip -selection clipboard -t image/png -i "$filename"
