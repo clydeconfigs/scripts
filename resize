@@ -1,18 +1,14 @@
 #!/usr/bin/bash
 
 test -z "$1" && {
-	echo "USAGE: resize [size in px] INPUT OUTPUT"
+	echo "USAGE: resize INPUT [size in px]"
 	exit 1
 }
+
+size="$2"
+
 test -z "$2" && {
-	echo "USAGE: resize [size in px] INPUT OUTPUT"
-	exit 1
+	size=512
 }
 
-size="$1"
-
-test -z "$1" && {
-	size=480
-}
-
-ffmpeg -i "$2" -vf "scale=-1:$size" "$3"
+ffmpeg -i "$1" -vf "scale=-1:$size" resized_"$1"
