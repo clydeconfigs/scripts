@@ -46,7 +46,7 @@ get_shell () {
     esac
 }
 
-hostname="Hostname: $(tput sgr0)$(cat /sys/class/dmi/id/product_name | awk '{print $1" "$2}')$(tput setaf $color)"
+hostname="Hostname: $(tput sgr0)$(cat /sys/devices/virtual/dmi/id/product_family)$(tput setaf $color)"
 os_release="Release: $(tput sgr0)$PRETTY_NAME$(tput setaf $color)"
 kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf $color)"
 uptime="Uptime: $(tput sgr0)$(uptime -p | sed 's/up //g')$(tput setaf $color)"
@@ -109,7 +109,7 @@ while [[ $# -gt 0 ]]; do
             arg="${1#-}"
             for ((i = 0; i < ${#arg}; i++)); do
                 case "${arg:$i:1}" in
-                    v | V) echo "1.8.2"; exit 0;;
+                    v | V) echo "1.8.3"; exit 0;;
                     o) remove "$os_release"; shift;;
                     h) remove "$hostname"; shift;;
                     t) remove "$term"; shift;;
@@ -255,7 +255,7 @@ esac
 #
      
 #
-#  simplefetch / sfetch / sf 1.8.2
+#  simplefetch / sfetch / sf 1.8.3
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 #                     lol, 39 got replaced by $color
@@ -303,3 +303,5 @@ esac
     # clyde, on 13 jun 2024 15:07 CEST 
     # 1.8.2 patch notes: add percentages in Disk and RAM, and put the / together
 
+    # clyde, on 13 jun 2024 15:07 CEST 
+    # 1.8.3 patch notes: change hostname a little
