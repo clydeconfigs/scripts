@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+gen_name () {
+  echo "xclip-$(tr -dc "a-z" </dev/urandom | head -c 10)"
+}
+
+save () {
+  filename=$(gen_name)
+
+  if [ "$(pwd)" != "$HOME" ]; then
+    while true; do
+      test -e "$filename" && filename=$(gen_name) || break
+    done
+    xclip -selection clipboard -t image/avif -o > $filename.avif
+  else
+    xclip -selection clipboard -t image/avif -o > "$HOME/Desktop/"$filename.avif
+  fi
+}
+
+save &> /dev/null &
+
