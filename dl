@@ -1,7 +1,0 @@
-#!/usr/bin/bash
-
-notify-send $(ls)
-link="$(xclip -sel c -o | sed 's./.\\.g')"
-notify-send "saving $link"
-yt-dlp "$(xclip -sel c -o)" -o $HOME/Desktop/"$link" || exit 1
-notify-send "saved"

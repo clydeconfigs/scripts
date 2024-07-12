@@ -1,9 +1,0 @@
-name="$(date +"%s%N")"
-
-if echo "$1" | grep "-"; then
-	if echo "$1" | grep "b"; then
-		name="$(date +"%s%N" | base32)"
-	fi
-fi
-
-ffmpeg -f alsa -i default $name.mp3

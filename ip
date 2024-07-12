@@ -1,5 +1,0 @@
-#!/usr/bin/bash
- 
-notify-send "$(curl ipinfo.io)
-
-$(ip route)"
