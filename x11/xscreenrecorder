@@ -18,10 +18,13 @@ else
 fi
 
 pid=$!
+echo $pid > /tmp/xscreenrecorder-pid
 
-read -sn1 i
-sleep 1 
-kill -INT $pid
+# read -sn1 i < /dev/tty
+# sleep 1 
+# kill -INT $pid
+
+sleep infinity
 
 exit 0
 
