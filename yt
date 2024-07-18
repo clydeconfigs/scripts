@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+echo -n "enter the link: "
+read lnk
+test -z $lnk && exit 1
+
+yt-dlp "$lnk"
