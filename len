@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+echo -n "enter the text: "
+read text
+test -z "$text" && exit 1
+
+{
+	echo -e "lines\twords\tcharacters"
+	echo -n "$text" | wc
+} | column -t

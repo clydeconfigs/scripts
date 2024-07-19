@@ -1,0 +1,158 @@
+#!/usr/bin/bash
+
+source /etc/os-release
+
+# change here if you want to fake your distro (?)
+# NAME="Distro Name"
+
+case $NAME in
+    "Arch Linux") 
+    color=39
+    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l), $(pacman -Qq | wc -l) total$(tput setaf "$color")"
+    ;;
+    "Artix Linux")
+    color=6
+    packages="Packages: $(tput sgr0)$(pacman -Qqe | wc -l), $(pacman -Qq | wc -l) total$(tput setaf "$color")"
+    ;;
+    "Debian GNU/Linux") 
+    color=1
+    packages="Packages: $(tput sgr0)$(dpkg-query -l | grep ^ii | awk '{print $2}' | wc -l)$(tput setaf 1)"
+    ;;
+    "Void") 
+    color=42
+    packages="Packages: $(tput sgr0)$(xbps-query -m | wc -l), $(xbps-query -l | wc -l) total$(tput setaf $color)"
+    ;;
+    "NixOS") 
+    color=7
+    packages="Packages: $(tput sgr0)$(nix-env -q | wc -l), $(nix-store --query --requisites /run/current-system/ | sort -u | wc -l) total$(tput setaf $color)"
+    ;;
+esac
+
+get_gpu () {
+     lspci | grep -i 'VGA' | awk -F': ' '{print $2}' | sed 's/(rev ..)//g' | head -n1 | sed -n 's/.*\[\(.*\)\].*/\1/p' | tr -d '\n'
+}
+
+get_shell () {
+    parent_process=$(ps -o comm= -p $(ps -o ppid= -p $$))
+    case "$parent_process" in
+        "bash") echo "bash, Bourne Again Shell";;
+        "dash")echo "dash, Almquist Shell";;
+        "zsh") echo "zsh, Z shell";;
+        "tcsh") echo "tcsh, TENEX C shell";;
+        "csh") echo "csh, C shell";;
+        "ksh") echo "ksh, Korn shell";;
+        "fish")echo "fish";;
+        *)echo "$parent_process";;
+    esac
+}
+
+hostname="Hostname: $(tput sgr0)$(cat /sys/devices/virtual/dmi/id/product_family)$(tput setaf $color)"
+os_release="Release: $(tput sgr0)$PRETTY_NAME$(tput setaf $color)"
+kernel="Kernel: $(tput sgr0)$(uname -r)$(tput setaf $color)"
+uptime="Uptime: $(tput sgr0)$(uptime -p | sed 's/up //g')$(tput setaf $color)"
+shell="Shell: $(tput sgr0)$(get_shell)$(tput setaf $color)"
+term="Term: $(tput sgr0)$(echo $TERM)$(tput setaf $color)"
+disk="Disk: $(tput sgr0)$(echo $(df -h | awk '/\/$/ {print $3 "/" $2 " (" $5 ")" }'))$(tput setaf $color)"
+ram="RAM: $(tput sgr0)$(free --mega | awk '/^Mem:/ {print $3 "MB" "/" $2 "MB (" int(100*$3/$2) "%)" }') "$(tput setaf $color)""
+cpu="CPU: $(tput sgr0)$(echo $(grep -m1 'model name' /proc/cpuinfo | awk -F': ' '{print $2}' | sed 's/with.*$//'))$(tput setaf $color)"
+gpu="GPU: $(tput sgr0)$(get_gpu)$(tput setaf $color)"
+wm="WM: $(tput sgr0)$(xprop -id $(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}') -notype -f _NET_WM_NAME 8t | grep "WM_NAME" | cut -f2 -d \")$(tput setaf $color)"
+
+test $(which battery >/dev/null) && {
+    battery="Battery: $(tput sgr0)$(acpi -b)$(tput setaf $color)"
+}
+
+element=(
+  "$hostname"
+  "$os_release"
+  "$packages"
+  "$kernel"
+  "$uptime"
+  "$battery"
+  "$shell"
+  "$term"
+  "$disk"
+  "$ram"
+  "$cpu"
+  "$gpu"
+  "$wm"
+  ""
+  "$(for c in $(seq 1 6); do tput setaf $c; echo -n "██"; done; tput sgr0)"
+)
+
+display_cpu=true
+display_gpu=true
+display_disk=true
+display_ram=true
+
+remove() {
+    new_array=()
+    for item in "${element[@]}"; do
+        if [[ "$item" != "$1" ]]; then
+            new_array+=("$item")
+        fi
+    done
+    element=("${new_array[@]}")
+}
+
+help() {
+    echo "help: you can chose elements to not display:
+-c: no cpu
+-g: no gpu
+-d: no disk
+-r: no ram
+-s: no shell
+-p: no packages
+-k: no kernel
+-t: no term
+-w: no wm"
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+       -*)
+            arg="${1#-}"
+            for ((i = 0; i < ${#arg}; i++)); do
+                case "${arg:$i:1}" in
+                    v | V) echo "1.0 sinfo"; exit 0;;
+                    o) remove "$os_release"; shift;;
+                    h) remove "$hostname"; shift;;
+                    t) remove "$term"; shift;;
+                    k) remove "$kernel"; shift;;
+                    p) remove "$packages"; shift;;
+                    s) remove "$shell"; shift;;
+                    c) remove "$cpu"; shift;;
+                    g) remove "$gpu"; shift;;
+                    d) remove "$disk"; shift;;
+                    r) remove "$ram"; shift;;
+                    w) remove "$wm"; shift;;
+                    h) help; exit 0;;
+                esac
+            done
+            shift
+            ;;
+        *)
+            echo "unknown option '$1'"
+            help
+            exit 1
+            ;;
+    esac
+done
+
+test -z "$(get_gpu)" && remove "$gpu"
+test $(which battery >/dev/null) || remove "$battery"
+
+how_many_lines=$(echo $(whoami)$(cat /proc/sys/kernel/hostname) | wc -c)
+
+echo -ne "$(tput setaf $color)${element[0]}
+${element[1]}
+${element[2]}
+${element[3]}
+${element[4]}
+${element[5]}
+${element[6]}
+${element[7]}
+${element[8]}
+${element[9]} 
+${element[10]} 
+${element[11]}"

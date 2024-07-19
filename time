@@ -2,8 +2,7 @@
  
 current_day=$(date +"%-e")
 
-cal_output=$(cal -n2 | sed -E "s/\b$current_day\b/$current_day*/; s/\* /*/" | sed '0,/\*/s/\*/ /' |sed 's/^/    /')
+cal_output=$(cal | sed -E "s/\b$current_day\b/$current_day*/; s/\* /*/" | sed '0,/\*/s/\*/ /' |sed 's/^/    /')
 
-notify-send "
-    $(date +"%a, %d %b %Y %T %Z")
-    "
+notify-send "$cal_output
+    $(date +"%d/%m/%y %T %Z")"
