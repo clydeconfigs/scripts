@@ -1,0 +1,17 @@
+#!/bin/bash
+
+mkdir /tmp/clipboard/ 2> /dev/null
+
+while true; do
+	xclip -o > /tmp/clipboard/tmp 2>/dev/null || {
+		xclip -t image/png -o > /tmp/clipboard/tmp
+	}
+	
+	hash=$(md5sum /tmp/clipboard/tmp | awk '{print $1}')
+
+	test -e /tmp/clipboard/$hash || {
+		cp /tmp/clipboard/tmp /tmp/clipboard/$hash
+	}
+	
+	sleep 0.1
+done
