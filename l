@@ -26,3 +26,6 @@ NR == 1 {
         fsuse, $4, reset,
         mountpoint, $5, reset
 }' | column -t 
+
+df -h | awk '/\/mnt/ {print $6 ": " $3 "/" $2 " (" $5 ")" }'
+echo -n "root: "; df -h | awk '/\/$/ {print $3 "/" $2 " (" $5 ")" }'
