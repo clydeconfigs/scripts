@@ -263,7 +263,7 @@ NR == 1 {
         mountpoint, $5, reset
 }' | column -t 
 printf "\n"
-
+echo -n "root: "; df -h | awk '/\/$/ {print $3 "/" $2 " (" $5 ")" }'
 
 
 
