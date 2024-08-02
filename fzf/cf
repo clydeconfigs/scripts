@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+# cf stands for [c]ommand [f]zf
+
+"$1" "$(fzf --preview 'cat {}')"
