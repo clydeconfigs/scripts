@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-lsblk -o NAME,SIZE,FSTYPE,FSUSE%,MOUNTPOINT | awk '
+lsblk -o NAME,SIZE,FSTYPE,FSUSE%,MOUNTPOINT | sed 's/  └/  └/g' | awk '
 BEGIN {
     header="\033[1;36m"   
     name="\033[0;32m"    

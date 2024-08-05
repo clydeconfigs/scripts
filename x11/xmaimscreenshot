@@ -1,6 +1,9 @@
 #!/usr/bin/bash
 
-filename="$HOME/recordings/$(date +"%s%N" | base32)"
+folder="$HOME/desktop/recordings"
+mkdir $folder
+
+filename="$folder/$(date +"%s%N" | base32)"
 
 maim -u "$filename"
 feh -x -F "$filename" &
@@ -17,4 +20,4 @@ avifenc "$filename" "$filename".avif
 
 mv "$filename" "$filename".png
 
-dunstify "saved at $HOME/recordings/screenshot$(date -R).png"
+dunstify "saved at $HOME/desktop/recordings/screenshot$(date -R).png"
