@@ -13,7 +13,7 @@ save () {
     done
     xclip -selection clipboard -t image/avif -o > $filename.avif
   else
-    xclip -selection clipboard -t image/avif -o > "$HOME/Desktop/"$filename.avif
+    xclip -selection clipboard -t image/avif -o > "$HOME/desktop/recordings/"$filename.avif
   fi
 }
 
