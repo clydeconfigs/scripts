@@ -20008,6 +20008,11 @@ hr () {
 	echo "――――――――――――――――――――――――――――――――――――――――――――――――――――――――"
 }
 
+if [[ $1 == "" ]]; then
+	echo "bits \"STRING\" [es]"
+	exit 2
+fi
+
 result=$(for word in $1; do
 	if [[ $2 == "es" ]]; then
 		grepd=$(echo "$top10000spanish" | grep -n "\<$word\>")

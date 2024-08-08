@@ -109,7 +109,7 @@ while [[ $# -gt 0 ]]; do
             arg="${1#-}"
             for ((i = 0; i < ${#arg}; i++)); do
                 case "${arg:$i:1}" in
-                    v | V) echo "1.9"; exit 0;;
+                    v | V) echo "2.0"; exit 0;;
                     o) remove "$os_release"; shift;;
                     h) remove "$hostname"; shift;;
                     t) remove "$term"; shift;;
@@ -236,7 +236,7 @@ echo -e "
 
 esac
 
-lsblk -o NAME,SIZE,FSTYPE,FSUSE%,MOUNTPOINT | awk '
+lsblk -o NAME,SIZE,FSTYPE,FSUSE%,MOUNTPOINT | sed 's/  └/  └/g' | awk '
 BEGIN {
     header="\033[1;36m"   
     name="\033[0;32m"    
@@ -285,7 +285,7 @@ echo
 #
      
 #
-#  simplefetch / sfetch / sf 1.9
+#  simplefetch / sfetch / sf 2.0
 #  created by clyde, on 18 feb 2024 at 16:$color CET
 #
 #                     lol, 39 got replaced by $color
@@ -338,4 +338,7 @@ echo
 
     # clyde, on 27 jul 2024 02:43 CEST 
     # 1.9 patch notes: changed some things
+
+    # clyde, on 6 aug 2024 03:47 CEST 
+    # 2.0 patch notes: added the lsblk thing
 
